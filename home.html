@@ -1,162 +1,350 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fleek x eBay | Partner Portal</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-.ebay-gradient{background:linear-gradient(135deg,#e53238 0%,#f5af02 33%,#86b817 66%,#0064d2 100%)}
-.btn-wa{background:#25D366;color:#fff;display:block;text-decoration:none;transition:all .2s}
-.btn-wa:hover{background:#1da851;transform:translateY(-2px);box-shadow:0 8px 20px rgba(37,211,102,.3)}
-.btn-blue{background:#0064d2;color:#fff;display:block;text-decoration:none;transition:all .2s}
-.btn-blue:hover{background:#0050a8;transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,100,210,.3)}
-.btn-gold{background:linear-gradient(135deg,#f5c842,#e8a500);color:#1a1a1a;border:0;cursor:pointer;width:100%;transition:all .2s}
-.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(245,200,66,.4)}
-.card{background:#fff;border-radius:1.25rem;border:1px solid #e5e7eb;padding:2rem;transition:all .2s}
-.card:hover{box-shadow:0 10px 30px rgba(0,0,0,.08)}
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:100;display:none;align-items:center;justify-content:center;padding:1rem}
-.modal-bg.open{display:flex}
-.modal{background:#fff;border-radius:1.25rem;padding:2rem;max-width:440px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.25);max-height:90vh;overflow-y:auto}
-.opt{border:2px solid #e5e7eb;border-radius:.75rem;padding:.875rem;text-align:center;cursor:pointer;transition:all .2s;background:#fff;width:100%}
-.opt:hover{border-color:#93c5fd}
-.opt.on{border-color:#0064d2;background:#eff6ff}
-.chat-box{background:#f7f8fb;border:1px solid #e0e3ec;border-radius:.75rem;display:flex;flex-direction:column}
-.chat-msgs{padding:1rem;overflow-y:auto;max-height:200px;display:flex;flex-direction:column;gap:.75rem;min-height:100px}
-.chat-row{padding:.75rem;border-top:1px solid #e5e7eb;display:flex;gap:.5rem}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fleek x eBay | Partner Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .ebay-bar { background: linear-gradient(90deg, #e53238, #f5af02, #86b817, #0064d2); height: 3px; }
+    .card { background: #fff; border-radius: 12px; border: 1px solid #e5e7eb; transition: box-shadow .2s; }
+    .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.08); }
+    .btn-wa { background: #25D366; color: #fff; transition: background .2s, transform .15s; }
+    .btn-wa:hover { background: #1ebe5d; transform: translateY(-1px); }
+    .btn-blue { background: #0064d2; color: #fff; transition: background .2s, transform .15s; }
+    .btn-blue:hover { background: #0055b3; transform: translateY(-1px); }
+    .btn-dark { background: #111; color: #fff; transition: background .2s, transform .15s; }
+    .btn-dark:hover { background: #333; transform: translateY(-1px); }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 100; display: none; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: #fff; border-radius: 14px; padding: 2rem; max-width: 460px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,.2); max-height: 90vh; overflow-y: auto; }
+    .opt-btn { border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 1rem; text-align: left; cursor: pointer; transition: border-color .15s, background .15s; background: #fff; width: 100%; }
+    .opt-btn:hover { border-color: #0064d2; background: #f0f7ff; }
+    .opt-btn.selected { border-color: #0064d2; background: #eff6ff; }
+    .chat-container { background: #f8f9fb; border: 1px solid #e5e7eb; border-radius: 10px; display: flex; flex-direction: column; }
+    .chat-messages { padding: 1rem; overflow-y: auto; max-height: 220px; min-height: 120px; display: flex; flex-direction: column; gap: .75rem; }
+    .chat-input-row { padding: .75rem; border-top: 1px solid #e5e7eb; display: flex; gap: .5rem; }
+    .badge { display: inline-flex; align-items: center; gap: .375rem; font-size: .7rem; font-weight: 600; padding: .25rem .625rem; border-radius: 999px; }
+  </style>
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen">
-<div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-40">
-<div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
-<div class="flex items-center gap-3">
-<span class="text-xl">⭐</span>
-<span class="font-black text-lg text-gray-900">FLEEK</span>
-<span class="text-gray-300 text-xl">×</span>
-<span class="font-black text-xl"><span style="color:#e53238">e</span><span style="color:#0064d2">B</span><span style="color:#f5af02">a</span><span style="color:#86b817">y</span></span>
-<span class="hidden sm:inline text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded ml-1">Partner Portal</span>
-</div>
-<div class="flex items-center gap-3">
-<span class="text-sm text-gray-500 hidden sm:block">Welcome, <strong id="ud" class="text-gray-900">Partner</strong></span>
-<button onclick="logout()" class="text-xs text-gray-500 hover:text-red-500 border border-gray-200 rounded-lg px-3 py-1.5 transition-colors">Sign out</button>
-</div>
-</div>
-</div>
-<div class="ebay-gradient h-1"></div>
-<div class="bg-white border-b border-gray-100">
-<div class="max-w-5xl mx-auto px-4 py-10 text-center">
-<span class="inline-flex items-center gap-2 bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full mb-4 inline-block">Exclusive Partnership</span>
-<h1 class="text-3xl sm:text-4xl font-black text-gray-900 mb-3">Your Fleek × eBay Portal</h1>
-<p class="text-gray-500 text-base max-w-lg mx-auto">Premium vintage stock sourced globally. Browse live drops, connect with suppliers, or speak to our team.</p>
-</div>
-</div>
-<div class="max-w-5xl mx-auto px-4 py-10">
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
 
-<div class="card text-center">
-<div class="text-4xl mb-4">📦</div>
-<h2 class="text-xl font-black text-gray-900 mb-2">Active Stock Lists</h2>
-<p class="text-sm text-gray-500 mb-6 leading-relaxed">Browse live inventory drops from our verified suppliers and place orders securely through eBay.</p>
-<a href="stocks.html" class="btn-blue w-full py-3.5 rounded-xl font-bold text-sm text-center">View Stock Lists →</a>
-</div>
+  <!-- Nav -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
+    <div class="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="https://joinfleek.com" target="_blank" class="flex items-center gap-2">
+          <img src="https://www.joinfleek.com/_next/static/media/Logo.6ba37d95.webp" alt="Fleek" class="h-8 w-auto">
+        </a>
+        <span class="text-gray-200 text-xl font-light">×</span>
+        <span class="font-black text-xl tracking-tight"><span style="color:#e53238">e</span><span style="color:#0064d2">B</span><span style="color:#f5af02">a</span><span style="color:#86b817">y</span></span>
+        <span class="hidden sm:inline text-xs font-semibold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">Partner Portal</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="text-sm text-gray-500 hidden sm:block">Welcome, <strong id="ud" class="text-gray-900">Partner</strong></span>
+        <button onclick="logout()" class="text-xs text-gray-500 hover:text-red-600 border border-gray-200 hover:border-red-200 rounded-lg px-3 py-1.5 transition-all">Sign out</button>
+      </div>
+    </div>
+  </header>
+  <div class="ebay-bar"></div>
 
-<div class="card text-center">
-<div class="text-4xl mb-4">💬</div>
-<h2 class="text-xl font-black text-gray-900 mb-2">Speak to Our Team</h2>
-<p class="text-sm text-gray-500 mb-6 leading-relaxed">Have questions? Chat directly with our commercial team on WhatsApp for fast, personalised support.</p>
-<a href="https://wa.me/447700900000?text=Hi%20Fleek%20team%2C%20I%27m%20a%20Fleek%20x%20eBay%20partner%20and%20I%27d%20like%20to%20speak%20with%20the%20commercial%20team." target="_blank" class="btn-wa w-full py-3.5 rounded-xl font-bold text-sm text-center">📲 Speak to Our Commercial Team</a>
-</div>
+  <!-- Hero -->
+  <section class="bg-white border-b border-gray-100">
+    <div class="max-w-5xl mx-auto px-6 py-12 text-center">
+      <p class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-3">Exclusive Partnership</p>
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">Your Fleek × eBay Partner Portal</h1>
+      <p class="text-gray-500 text-base max-w-xl mx-auto leading-relaxed">Premium vintage stock sourced globally. Browse live drops, connect with verified suppliers, or speak directly with our commercial team.</p>
+    </div>
+  </section>
 
-<div class="card text-center">
-<div class="text-4xl mb-4">🤝</div>
-<h2 class="text-xl font-black text-gray-900 mb-2">Find Your Suppliers</h2>
-<p class="text-sm text-gray-500 mb-6 leading-relaxed">Tell us what you need and we'll match you with the right suppliers via live chat instantly.</p>
-<button onclick="openM()" class="btn-gold py-3.5 rounded-xl font-bold text-sm">✨ Introduce Me to Suppliers</button>
-</div>
+  <!-- Cards -->
+  <main class="max-w-5xl mx-auto px-6 py-10">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
 
-</div>
+      <!-- Stock Lists -->
+      <div class="card p-6 flex flex-col">
+        <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        </div>
+        <h2 class="text-base font-bold text-gray-900 mb-2">Active Stock Lists</h2>
+        <p class="text-sm text-gray-500 mb-6 leading-relaxed flex-1">Browse live inventory drops from our verified suppliers and place orders securely through eBay.</p>
+        <a href="stocks.html" class="btn-blue w-full py-3 rounded-lg font-semibold text-sm text-center block">View Stock Lists</a>
+      </div>
 
-<div class="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3">
-<div class="bg-white rounded-xl border border-gray-100 p-3 flex items-center gap-2 shadow-sm"><span class="text-lg">✅</span><div><p class="text-xs font-semibold">Quality Checked</p><p class="text-xs text-gray-400">Graded stock</p></div></div>
-<div class="bg-white rounded-xl border border-gray-100 p-3 flex items-center gap-2 shadow-sm"><span class="text-lg">🛡️</span><div><p class="text-xs font-semibold">Buyer Protection</p><p class="text-xs text-gray-400">eBay guaranteed</p></div></div>
-<div class="bg-white rounded-xl border border-gray-100 p-3 flex items-center gap-2 shadow-sm"><span class="text-lg">✈️</span><div><p class="text-xs font-semibold">Air & Sea</p><p class="text-xs text-gray-400">2-3 or 6-8 wks</p></div></div>
-<div class="bg-white rounded-xl border border-gray-100 p-3 flex items-center gap-2 shadow-sm"><span class="text-lg">🌍</span><div><p class="text-xs font-semibold">Global Suppliers</p><p class="text-xs text-gray-400">Verified & rated</p></div></div>
-</div>
-</div>
+      <!-- WhatsApp -->
+      <div class="card p-6 flex flex-col">
+        <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.108.547 4.087 1.502 5.817L.057 23.944 6.35 22.5A11.946 11.946 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.817 9.817 0 01-5.007-1.372l-.359-.214-3.72.976.993-3.624-.234-.372A9.815 9.815 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+        </div>
+        <h2 class="text-base font-bold text-gray-900 mb-2">Speak to Our Team</h2>
+        <p class="text-sm text-gray-500 mb-6 leading-relaxed flex-1">Have questions? Chat directly with our commercial team on WhatsApp for fast, personalised support.</p>
+        <a href="https://wa.me/447767863494?text=Hi%20Fleek%20team%2C%20I%27m%20a%20Fleek%20x%20eBay%20partner%20and%20I%27d%20like%20to%20speak%20with%20the%20commercial%20team." target="_blank" class="btn-wa w-full py-3 rounded-lg font-semibold text-sm text-center block">Speak to Our Commercial Team</a>
+      </div>
 
-<div class="bg-white border-t border-gray-200 py-6 mt-8">
-<div class="max-w-5xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-<div class="flex items-center gap-2"><span>⭐</span><span class="font-black text-gray-800">FLEEK</span><span class="text-gray-300">×</span><span class="font-black text-lg"><span style="color:#e53238">e</span><span style="color:#0064d2">B</span><span style="color:#f5af02">a</span><span style="color:#86b817">y</span></span></div>
-<p class="text-xs text-gray-400">© 2026 Fleek × eBay Partnership</p>
-<div class="flex gap-4 text-xs"><a href="https://joinfleek.com" target="_blank" class="text-gray-400 hover:text-blue-600">joinfleek.com</a><a href="https://ebay.com" target="_blank" class="text-gray-400 hover:text-blue-600">ebay.com</a></div>
-</div>
-</div>
+      <!-- Suppliers -->
+      <div class="card p-6 flex flex-col">
+        <div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center mb-5">
+          <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <h2 class="text-base font-bold text-gray-900 mb-2">Find Your Suppliers</h2>
+        <p class="text-sm text-gray-500 mb-6 leading-relaxed flex-1">Tell us what you need and we'll match you with the right suppliers for an instant introduction.</p>
+        <button onclick="openModal()" class="btn-dark w-full py-3 rounded-lg font-semibold text-sm text-center">Introduce Me to Suppliers</button>
+      </div>
 
-<div class="modal-bg" id="mbg">
-<div class="modal">
-<div id="s1">
-<div class="flex items-center justify-between mb-5">
-<h2 class="text-xl font-black text-gray-900">Find Your Suppliers</h2>
-<button onclick="closeM()" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
-</div>
-<p class="text-sm text-gray-500 mb-5">Tell us what you're looking for and we'll connect you with the right suppliers.</p>
-<p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Order Type</p>
-<div class="grid grid-cols-2 gap-3 mb-5">
-<button class="opt" id="o-hp" onclick="pick('ot','hp',this)"><div class="text-2xl mb-1">🖐️</div><div class="text-sm font-bold">Handpick</div><div class="text-xs text-gray-400">Curated selection</div></button>
-<button class="opt" id="o-bk" onclick="pick('ot','bk',this)"><div class="text-2xl mb-1">📦</div><div class="text-sm font-bold">Bulk Order</div><div class="text-xs text-gray-400">High volume</div></button>
-</div>
-<p class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-2">Category</p>
-<div class="grid grid-cols-2 gap-3 mb-6">
-<button class="opt" id="o-mn" onclick="pick('cat','mn',this)"><div class="text-2xl mb-1">👔</div><div class="text-sm font-bold">Menswear</div><div class="text-xs text-gray-400">Men's vintage</div></button>
-<button class="opt" id="o-wm" onclick="pick('cat','wm',this)"><div class="text-2xl mb-1">👗</div><div class="text-sm font-bold">Womenswear</div><div class="text-xs text-gray-400">Women's vintage</div></button>
-</div>
-<button id="gb" onclick="goChat()" disabled class="w-full py-3.5 rounded-xl font-bold text-sm text-white bg-gray-300 cursor-not-allowed transition-all">Connect Me with Suppliers →</button>
-</div>
+    </div>
 
-<div id="s2" class="hidden">
-<div class="flex items-center justify-between mb-5">
-<button onclick="showS1()" class="text-sm text-blue-600 font-semibold hover:underline">← Back</button>
-<button onclick="closeM()" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
-</div>
-<div class="text-center mb-4">
-<div class="text-3xl mb-1">🎉</div>
-<h2 class="text-lg font-black text-gray-900 mb-1">You're Connected!</h2>
-<p class="text-xs text-gray-500" id="mi">Matching...</p>
-</div>
-<div class="chat-box mb-3">
-<div class="chat-msgs" id="cm"></div>
-<div class="chat-row">
-<input id="ci" type="text" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" onkeydown="if(event.key==='Enter')sm()">
-<button onclick="sm()" class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-3 py-2 text-sm font-bold">Send</button>
-</div>
-</div>
-<p class="text-xs text-center text-gray-400">Powered by Sendbird · Fleek × eBay Supplier Network</p>
-</div>
-</div>
-</div>
+    <!-- Trust bar -->
+    <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div class="bg-white rounded-lg border border-gray-100 p-3 flex items-center gap-3 shadow-sm">
+        <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div><p class="text-xs font-semibold text-gray-800">Quality Checked</p><p class="text-xs text-gray-400">Graded A/B stock</p></div>
+      </div>
+      <div class="bg-white rounded-lg border border-gray-100 p-3 flex items-center gap-3 shadow-sm">
+        <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        <div><p class="text-xs font-semibold text-gray-800">Buyer Protection</p><p class="text-xs text-gray-400">eBay guaranteed</p></div>
+      </div>
+      <div class="bg-white rounded-lg border border-gray-100 p-3 flex items-center gap-3 shadow-sm">
+        <svg class="w-5 h-5 text-indigo-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+        <div><p class="text-xs font-semibold text-gray-800">Air &amp; Sea Shipping</p><p class="text-xs text-gray-400">2-3 or 6-8 weeks</p></div>
+      </div>
+      <div class="bg-white rounded-lg border border-gray-100 p-3 flex items-center gap-3 shadow-sm">
+        <svg class="w-5 h-5 text-orange-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div><p class="text-xs font-semibold text-gray-800">Global Suppliers</p><p class="text-xs text-gray-400">Verified &amp; rated</p></div>
+      </div>
+    </div>
+  </main>
 
-<script>
-(function(){var a=sessionStorage.getItem('fleek_auth');if(!a){window.location.href='index.html';return;}try{var u=JSON.parse(a);var el=document.getElementById('ud');if(el&&u.email)el.textContent=u.email.split('@')[0];}catch(e){}})();
-function logout(){sessionStorage.removeItem('fleek_auth');window.location.href='index.html';}
-var sel={ot:null,cat:null};
-function openM(){document.getElementById('mbg').classList.add('open');}
-function closeM(){document.getElementById('mbg').classList.remove('open');resetM();}
-function resetM(){sel={ot:null,cat:null};document.querySelectorAll('.opt').forEach(function(b){b.classList.remove('on');});var gb=document.getElementById('gb');gb.disabled=true;gb.className='w-full py-3.5 rounded-xl font-bold text-sm text-white bg-gray-300 cursor-not-allowed transition-all';showS1();}
-function showS1(){document.getElementById('s1').classList.remove('hidden');document.getElementById('s2').classList.add('hidden');}
-function pick(t,v,el){sel[t]=v;var g=t==='ot'?['o-hp','o-bk']:['o-mn','o-wm'];g.forEach(function(id){document.getElementById(id).classList.remove('on');});el.classList.add('on');var gb=document.getElementById('gb');if(sel.ot&&sel.cat){gb.disabled=false;gb.className='w-full py-3.5 rounded-xl font-bold text-sm text-white bg-blue-600 hover:bg-blue-700 cursor-pointer transition-all';}}
-var chs={
-'hp-mn':{s:'thrift-kings',m:[{w:'thrift-kings',t:"Hi! We specialise in handpicked menswear. Tell us your budget and preferred styles."},{w:'Fleek Team',t:"thrift-kings: 4.7 stars, 111 repeat buyers. Min order £100 (Air). What are you looking for?"}]},
-'bk-mn':{s:'thrift-kings & jan-vintage',m:[{w:'thrift-kings',t:"Hi! 500+ units of bulk menswear ready - Levis 501, Carhartt, Nike/Adidas and more."},{w:'jan-vintage',t:"Hello! 2000+ mens pieces including Polo RL, flannel shirts and sweatshirts. Min £200 (Air)."}]},
-'hp-wm':{s:'thrift-kings',m:[{w:'thrift-kings',t:"Hi! We love handpicking womenswear - Y2K, knitwear, rugby shirts. What is your style?"},{w:'Fleek Team',t:"Grade A/B womenswear stock available. Share your price range and we will curate something great."}]},
-'bk-wm':{s:'thrift-kings & jan-vintage',m:[{w:'thrift-kings',t:"Hi! Y2K flared pants, skirts and Harley Y2K tops in bulk. Min 30% staple required."},{w:'jan-vintage',t:"Hello! Branded knitwear and Y2K vintage pieces ready to ship. Can send a sample list!"}]}
-};
-function goChat(){if(!sel.ot||!sel.cat)return;var k=sel.ot+'-'+sel.cat;var ch=chs[k];document.getElementById('mi').textContent='Connected with: '+ch.s;document.getElementById('s1').classList.add('hidden');document.getElementById('s2').classList.remove('hidden');var c=document.getElementById('cm');c.innerHTML='';asy(c,'You have been matched with '+ch.s+'. Say hello!');setTimeout(function(){am(c,ch.m[0].w,ch.m[0].t);},700);setTimeout(function(){if(ch.m[1])am(c,ch.m[1].w,ch.m[1].t);},1500);}
-function asy(c,t){var d=document.createElement('div');d.className='text-center text-xs text-gray-400 bg-gray-100 rounded-full px-3 py-1 mx-auto';d.style.maxWidth='92%';d.textContent=t;c.appendChild(d);c.scrollTop=c.scrollHeight;}
-function am(c,s,t){var d=document.createElement('div');d.className='flex gap-2 items-start';var av=document.createElement('div');av.className='w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0';av.style.background=s.includes('Fleek')?'#0064d2':'#f5c842';av.style.color=s.includes('Fleek')?'#fff':'#1a1a1a';av.textContent=s.charAt(0).toUpperCase();var w=document.createElement('div');w.className='flex-1 min-w-0';var nm=document.createElement('div');nm.className='text-xs text-gray-400 mb-0.5 font-medium';nm.textContent=s;var b=document.createElement('div');b.className='bg-white border border-gray-200 rounded-xl rounded-tl-none px-3 py-2 text-sm text-gray-800 shadow-sm';b.textContent=t;w.appendChild(nm);w.appendChild(b);d.appendChild(av);d.appendChild(w);c.appendChild(d);c.scrollTop=c.scrollHeight;}
-function au(c,t){var d=document.createElement('div');d.className='flex gap-2 items-start flex-row-reverse';var av=document.createElement('div');av.className='w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0';av.textContent='Y';var b=document.createElement('div');b.className='bg-blue-600 text-white rounded-xl rounded-tr-none px-3 py-2 text-sm';b.textContent=t;d.appendChild(av);d.appendChild(b);c.appendChild(d);c.scrollTop=c.scrollHeight;}
-var rs=["Thanks for that! Checking availability now.","Great - can you share more about your budget?","Perfect! I will put a selection together shortly.","Absolutely - what is your timeline?"];
-function sm(){var inp=document.getElementById('ci');var t=inp.value.trim();if(!t)return;au(document.getElementById('cm'),t);inp.value='';setTimeout(function(){am(document.getElementById('cm'),'Supplier',rs[Math.floor(Math.random()*rs.length)]);},1000);}
-document.getElementById('mbg').addEventListener('click',function(e){if(e.target===this)closeM();});
-</script>
+  <!-- Footer -->
+  <footer class="bg-white border-t border-gray-100 py-6 mt-4">
+    <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <img src="https://www.joinfleek.com/_next/static/media/Logo.6ba37d95.webp" alt="Fleek" class="h-6 w-auto">
+        <span class="text-gray-300">×</span>
+        <span class="font-black text-lg"><span style="color:#e53238">e</span><span style="color:#0064d2">B</span><span style="color:#f5af02">a</span><span style="color:#86b817">y</span></span>
+      </div>
+      <p class="text-xs text-gray-400">© 2026 Fleek × eBay Partnership</p>
+      <div class="flex gap-4 text-xs">
+        <a href="https://joinfleek.com" target="_blank" class="text-gray-400 hover:text-blue-600 transition-colors">joinfleek.com</a>
+        <a href="https://ebay.com" target="_blank" class="text-gray-400 hover:text-blue-600 transition-colors">ebay.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Supplier Modal -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal-box">
+      <!-- Step 1: Selection -->
+      <div id="step-1">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-lg font-bold text-gray-900">Find Your Suppliers</h2>
+          <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <p class="text-sm text-gray-500 mb-6">Tell us what you're looking for and we'll connect you with the right suppliers.</p>
+
+        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">Order Type</p>
+        <div class="grid grid-cols-2 gap-3 mb-6">
+          <button class="opt-btn" id="opt-hp" onclick="pick('ot','hp',this)">
+            <div class="font-semibold text-sm text-gray-900 mb-0.5">Handpick</div>
+            <div class="text-xs text-gray-500">Curated selection</div>
+          </button>
+          <button class="opt-btn" id="opt-bk" onclick="pick('ot','bk',this)">
+            <div class="font-semibold text-sm text-gray-900 mb-0.5">Bulk Order</div>
+            <div class="text-xs text-gray-500">High volume</div>
+          </button>
+        </div>
+
+        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">Category</p>
+        <div class="grid grid-cols-2 gap-3 mb-8">
+          <button class="opt-btn" id="opt-mn" onclick="pick('cat','mn',this)">
+            <div class="font-semibold text-sm text-gray-900 mb-0.5">Menswear</div>
+            <div class="text-xs text-gray-500">Men's vintage</div>
+          </button>
+          <button class="opt-btn" id="opt-wm" onclick="pick('cat','wm',this)">
+            <div class="font-semibold text-sm text-gray-900 mb-0.5">Womenswear</div>
+            <div class="text-xs text-gray-500">Women's vintage</div>
+          </button>
+        </div>
+
+        <button id="connect-btn" onclick="goChat()" disabled class="w-full py-3 rounded-lg font-semibold text-sm text-white bg-gray-300 cursor-not-allowed transition-all">Connect Me with Suppliers</button>
+      </div>
+
+      <!-- Step 2: Chat -->
+      <div id="step-2" class="hidden">
+        <div class="flex items-center justify-between mb-5">
+          <button onclick="showStep1()" class="text-sm text-blue-600 font-semibold hover:underline flex items-center gap-1">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            Back
+          </button>
+          <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <div class="mb-5">
+          <h2 class="text-base font-bold text-gray-900 mb-1">You're connected</h2>
+          <p class="text-sm text-gray-500" id="match-info">Connecting...</p>
+        </div>
+        <div class="chat-container mb-4">
+          <div class="chat-messages" id="chat-msgs"></div>
+          <div class="chat-input-row">
+            <input id="chat-input" type="text" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" onkeydown="if(event.key==='Enter')sendMsg()">
+            <button onclick="sendMsg()" class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-semibold transition-colors">Send</button>
+          </div>
+        </div>
+        <p class="text-xs text-center text-gray-400">Powered by Sendbird · Fleek × eBay Supplier Network</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      var a = sessionStorage.getItem('fleek_auth');
+      if (!a) { window.location.href = 'index.html'; return; }
+      try {
+        var u = JSON.parse(a);
+        var el = document.getElementById('ud');
+        if (el && u.email) el.textContent = u.email.split('@')[0];
+      } catch(e) {}
+    })();
+
+    function logout() {
+      sessionStorage.removeItem('fleek_auth');
+      window.location.href = 'index.html';
+    }
+
+    var sel = { ot: null, cat: null };
+
+    function openModal() { document.getElementById('modal-overlay').classList.add('open'); }
+    function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); resetModal(); }
+    function resetModal() {
+      sel = { ot: null, cat: null };
+      document.querySelectorAll('.opt-btn').forEach(function(b) { b.classList.remove('selected'); });
+      var btn = document.getElementById('connect-btn');
+      btn.disabled = true;
+      btn.className = 'w-full py-3 rounded-lg font-semibold text-sm text-white bg-gray-300 cursor-not-allowed transition-all';
+      showStep1();
+    }
+    function showStep1() {
+      document.getElementById('step-1').classList.remove('hidden');
+      document.getElementById('step-2').classList.add('hidden');
+    }
+    function pick(type, val, el) {
+      sel[type] = val;
+      var group = type === 'ot' ? ['opt-hp', 'opt-bk'] : ['opt-mn', 'opt-wm'];
+      group.forEach(function(id) { document.getElementById(id).classList.remove('selected'); });
+      el.classList.add('selected');
+      var btn = document.getElementById('connect-btn');
+      if (sel.ot && sel.cat) {
+        btn.disabled = false;
+        btn.className = 'w-full py-3 rounded-lg font-semibold text-sm text-white bg-gray-900 hover:bg-gray-700 cursor-pointer transition-all';
+      }
+    }
+
+    var chats = {
+      'hp-mn': { supplier: 'thrift-kings', msgs: [
+        { from: 'thrift-kings', text: 'Hi! We specialise in handpicked menswear. Tell us your budget and preferred styles.' },
+        { from: 'Fleek Team', text: 'thrift-kings: 4.7 stars, 111 repeat buyers. Min order £100 (Air). What are you looking for?' }
+      ]},
+      'bk-mn': { supplier: 'thrift-kings', msgs: [
+        { from: 'thrift-kings', text: 'Hi! We have 500+ units of bulk menswear ready — Levis 501, Carhartt, Nike, Adidas and more.' },
+        { from: 'Fleek Team', text: 'thrift-kings has great availability right now. Min order £100 (Air). What categories interest you?' }
+      ]},
+      'hp-wm': { supplier: 'retro-thrift-store-1', msgs: [
+        { from: 'retro-thrift-store-1', text: 'Hi! We love handpicking womenswear — Y2K, knitwear, rugby shirts. What styles are you after?' },
+        { from: 'Fleek Team', text: 'Grade A/B womenswear stock available. Share your price range and we will curate something great.' }
+      ]},
+      'bk-wm': { supplier: 'retro-thrift-store-1', msgs: [
+        { from: 'retro-thrift-store-1', text: 'Hi! Y2K flared pants, skirts and branded knitwear available in bulk. Min 30% staple required.' },
+        { from: 'Fleek Team', text: 'retro-thrift-store-1 has a strong womenswear range. Can send a full sample list on request.' }
+      ]}
+    };
+
+    function goChat() {
+      if (!sel.ot || !sel.cat) return;
+      var key = sel.ot + '-' + sel.cat;
+      var ch = chats[key];
+      document.getElementById('match-info').textContent = 'Connected with: ' + ch.supplier;
+      document.getElementById('step-1').classList.add('hidden');
+      document.getElementById('step-2').classList.remove('hidden');
+      var msgs = document.getElementById('chat-msgs');
+      msgs.innerHTML = '';
+      appendSystem(msgs, 'You have been matched with ' + ch.supplier + '.');
+      setTimeout(function() { appendMsg(msgs, ch.msgs[0].from, ch.msgs[0].text); }, 600);
+      setTimeout(function() { if (ch.msgs[1]) appendMsg(msgs, ch.msgs[1].from, ch.msgs[1].text); }, 1400);
+    }
+
+    function appendSystem(container, text) {
+      var d = document.createElement('div');
+      d.className = 'text-center text-xs text-gray-400 bg-gray-100 rounded-full px-3 py-1 mx-auto';
+      d.style.maxWidth = '90%';
+      d.textContent = text;
+      container.appendChild(d);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function appendMsg(container, sender, text) {
+      var d = document.createElement('div');
+      d.className = 'flex gap-2 items-start';
+      var av = document.createElement('div');
+      av.className = 'w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-white';
+      av.style.background = sender.includes('Fleek') ? '#0064d2' : '#111';
+      av.textContent = sender.charAt(0).toUpperCase();
+      var wrap = document.createElement('div');
+      wrap.className = 'flex-1 min-w-0';
+      var nm = document.createElement('div');
+      nm.className = 'text-xs text-gray-400 mb-1 font-medium';
+      nm.textContent = sender;
+      var bubble = document.createElement('div');
+      bubble.className = 'bg-white border border-gray-200 rounded-xl rounded-tl-none px-3 py-2 text-sm text-gray-800 shadow-sm';
+      bubble.textContent = text;
+      wrap.appendChild(nm);
+      wrap.appendChild(bubble);
+      d.appendChild(av);
+      d.appendChild(wrap);
+      container.appendChild(d);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function appendUserMsg(container, text) {
+      var d = document.createElement('div');
+      d.className = 'flex gap-2 items-start flex-row-reverse';
+      var av = document.createElement('div');
+      av.className = 'w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0';
+      av.textContent = 'Y';
+      var bubble = document.createElement('div');
+      bubble.className = 'bg-blue-600 text-white rounded-xl rounded-tr-none px-3 py-2 text-sm';
+      bubble.textContent = text;
+      d.appendChild(av);
+      d.appendChild(bubble);
+      container.appendChild(d);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    var replies = [
+      'Thanks for that — checking availability now.',
+      'Great, can you share more about your budget?',
+      'Perfect. I will put a selection together shortly.',
+      'Understood — what is your timeline for delivery?'
+    ];
+
+    function sendMsg() {
+      var inp = document.getElementById('chat-input');
+      var text = inp.value.trim();
+      if (!text) return;
+      var msgs = document.getElementById('chat-msgs');
+      appendUserMsg(msgs, text);
+      inp.value = '';
+      setTimeout(function() {
+        appendMsg(msgs, 'Supplier', replies[Math.floor(Math.random() * replies.length)]);
+      }, 900);
+    }
+
+    document.getElementById('modal-overlay').addEventListener('click', function(e) {
+      if (e.target === this) closeModal();
+    });
+  </script>
 </body>
 </html>
