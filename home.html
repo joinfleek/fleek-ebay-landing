@@ -1,401 +1,451 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fleek x eBay | Partner Portal</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fleek × eBay | Partner Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    body { font-family: 'Inter', sans-serif; }
-    .ebay-bar { background: linear-gradient(90deg, #e53238, #f5af02, #86b817, #0064d2); height: 3px; }
-    .card { background: #fff; border-radius: 12px; border: 1px solid #e5e7eb; transition: box-shadow .2s; }
-    .card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.08); }
-    .btn-wa { background: #25D366; color: #fff; transition: background .2s, transform .15s; }
-    .btn-wa:hover { background: #1ebe5d; transform: translateY(-1px); }
-    .btn-blue { background: #0064d2; color: #fff; transition: background .2s, transform .15s; }
-    .btn-blue:hover { background: #0055b3; transform: translateY(-1px); }
-    .btn-dark { background: #111; color: #fff; transition: background .2s, transform .15s; }
-    .btn-dark:hover { background: #333; transform: translateY(-1px); }
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.5); z-index: 100; display: none; align-items: center; justify-content: center; padding: 1rem; }
-    .modal-overlay.open { display: flex; }
-    .modal-box { background: #fff; border-radius: 14px; padding: 2rem; max-width: 460px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,.2); max-height: 90vh; overflow-y: auto; }
-    .opt-btn { border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 1rem; text-align: left; cursor: pointer; transition: border-color .15s, background .15s; background: #fff; width: 100%; }
-    .opt-btn:hover { border-color: #0064d2; background: #f0f7ff; }
-    .opt-btn.selected { border-color: #0064d2; background: #eff6ff; }
-    .chat-container { background: #f8f9fb; border: 1px solid #e5e7eb; border-radius: 10px; display: flex; flex-direction: column; }
-    .chat-messages { padding: 1rem; overflow-y: auto; max-height: 220px; min-height: 120px; display: flex; flex-direction: column; gap: .75rem; }
-    .chat-input-row { padding: .75rem; border-top: 1px solid #e5e7eb; display: flex; gap: .5rem; position: relative; }
-    .account-gate { position: absolute; inset: 0; background: rgba(255,255,255,.92); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; border-radius: 0 0 10px 10px; border-top: 1px solid #e5e7eb; padding: .75rem 1rem; gap: .75rem; }
-    .fleek-account-modal { background: #fff; border-radius: 16px; padding: 2rem; max-width: 400px; width: 100%; box-shadow: 0 24px 64px rgba(0,0,0,.18); }
+    :root {
+      --brand-yellow: #F5D547;
+      --brand-black:  #000000;
+      --brand-white:  #FFFFFF;
+      --accent-green: #2D9C59;
+      --neutral-100:  #F9FAFB;
+      --neutral-200:  #E5E7EB;
+      --neutral-400:  #9CA3AF;
+      --neutral-500:  #6B7280;
+      --neutral-700:  #374151;
+      --neutral-900:  #111827;
+      --ebay-red:    #E53238;
+      --ebay-blue:   #0064D2;
+      --ebay-yellow: #F5AF02;
+      --ebay-green:  #86B817;
+      --font: 'Montserrat', sans-serif;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-pill: 100px;
+      --shadow-card: 0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.06);
+      --shadow-hover: 0 4px 8px rgba(0,0,0,.08), 0 12px 32px rgba(0,0,0,.1);
+      --transition: 0.18s cubic-bezier(.4,0,.2,1);
+    }
+    *, ::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: var(--font);
+      background: var(--neutral-100);
+      color: var(--brand-black);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a   { text-decoration: none; color: inherit; }
+    button { font-family: var(--font); cursor: pointer; border: none; background: none; }
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--brand-white);
+      border-bottom: 1.5px solid var(--neutral-200);
+      padding: 0 32px; height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 10px; }
+    .nav-brand img { height: 28px; width: auto; }
+    .nav-divider { font-size: 22px; font-weight: 300; color: var(--neutral-400); line-height: 1; }
+    .nav-ebay {
+      display: flex; align-items: center; gap: 1px;
+      font-size: 22px; font-weight: 800; letter-spacing: -0.5px; line-height: 1;
+    }
+    .nav-ebay span:nth-child(1) { color: #E53238; }
+    .nav-ebay span:nth-child(2) { color: #0064D2; }
+    .nav-ebay span:nth-child(3) { color: #F5AF02; }
+    .nav-ebay span:nth-child(4) { color: #86B817; }
+    .nav-pill {
+      background: var(--brand-yellow); color: var(--brand-black);
+      font-size: 11px; font-weight: 700; letter-spacing: 0.04em;
+      text-transform: uppercase; padding: 4px 10px;
+      border-radius: var(--radius-pill); line-height: 1.4;
+    }
+    .nav-right { display: flex; align-items: center; gap: 16px; }
+    .nav-welcome { font-size: 13px; color: var(--neutral-500); font-weight: 500; }
+    .nav-welcome strong { color: var(--brand-black); font-weight: 700; }
+    .nav-signout {
+      font-size: 13px; font-weight: 600; color: var(--neutral-700);
+      padding: 6px 14px; border: 1.5px solid var(--neutral-200);
+      border-radius: var(--radius-sm); transition: var(--transition);
+    }
+    .nav-signout:hover { border-color: var(--brand-black); background: var(--brand-black); color: var(--brand-white); }
+    .hero {
+      background: var(--brand-black);
+      padding: 72px 32px 64px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 120%, rgba(245,213,71,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(245,213,71,.12); border: 1px solid rgba(245,213,71,.3);
+      color: var(--brand-yellow); font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 5px 14px; border-radius: var(--radius-pill); margin-bottom: 28px;
+    }
+    .hero-badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--brand-yellow); animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: .5; transform: scale(1.4); }
+    }
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 52px); font-weight: 900;
+      color: var(--brand-white); line-height: 1.1; letter-spacing: -0.02em;
+      max-width: 680px; margin: 0 auto 20px;
+    }
+    .hero h1 .accent { color: var(--brand-yellow); }
+    .hero-sub {
+      font-size: 16px; font-weight: 400; color: var(--neutral-400);
+      max-width: 480px; margin: 0 auto; line-height: 1.65;
+    }
+    .trust-strip {
+      background: var(--brand-white); border-bottom: 1.5px solid var(--neutral-200);
+      padding: 16px 32px; display: flex; justify-content: center; gap: 40px; flex-wrap: wrap;
+    }
+    .trust-item { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--neutral-700); }
+    .trust-icon {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--neutral-100); border: 1.5px solid var(--neutral-200);
+      display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;
+    }
+    .trust-item.green .trust-icon { background: #f0fdf4; border-color: #bbf7d0; }
+    .trust-item.yellow .trust-icon { background: #fefce8; border-color: #fde68a; }
+    .trust-item.blue .trust-icon { background: #eff6ff; border-color: #bfdbfe; }
+    .main { max-width: 1040px; margin: 0 auto; padding: 48px 24px 80px; }
+    .section-label {
+      display: inline-block; background: var(--brand-black); color: var(--brand-white);
+      font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+      padding: 4px 10px; border-radius: var(--radius-pill); margin-bottom: 24px;
+    }
+    .cards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    @media (max-width: 768px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      nav { padding: 0 16px; }
+      .hero { padding: 48px 20px 48px; }
+      .trust-strip { gap: 20px; padding: 14px 16px; }
+      .main { padding: 32px 16px 60px; }
+    }
+    .card {
+      background: var(--brand-white); border: 1.5px solid var(--neutral-200);
+      border-radius: var(--radius-lg); padding: 28px;
+      display: flex; flex-direction: column; gap: 12px;
+      box-shadow: var(--shadow-card); transition: var(--transition);
+      position: relative; overflow: hidden;
+    }
+    .card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: var(--brand-yellow); transform: scaleX(0);
+      transform-origin: left; transition: transform var(--transition);
+    }
+    .card:hover { border-color: var(--brand-black); box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+    .card:hover::before { transform: scaleX(1); }
+    .card-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-md);
+      background: var(--brand-yellow); display: flex; align-items: center;
+      justify-content: center; font-size: 20px; flex-shrink: 0;
+    }
+    .card h2 { font-size: 18px; font-weight: 800; color: var(--brand-black); letter-spacing: -0.01em; line-height: 1.2; }
+    .card p { font-size: 13.5px; line-height: 1.6; color: var(--neutral-500); flex: 1; }
+    .card p strong { color: var(--brand-black); font-weight: 700; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 20px; border-radius: var(--radius-sm); font-size: 13.5px;
+      font-weight: 700; letter-spacing: -0.01em; transition: var(--transition);
+      width: 100%; margin-top: 4px;
+    }
+    .btn-primary { background: var(--brand-yellow); color: var(--brand-black); }
+    .btn-primary:hover { background: #f0c800; transform: translateY(-1px); }
+    .btn-black { background: var(--brand-black); color: var(--brand-white); }
+    .btn-black:hover { background: #222; transform: translateY(-1px); }
+    .btn-outline { background: transparent; color: var(--brand-black); border: 1.5px solid var(--neutral-200); }
+    .btn-outline:hover { border-color: var(--brand-black); background: var(--brand-black); color: var(--brand-white); }
+    .arrow { font-size: 16px; transition: transform var(--transition); }
+    .btn:hover .arrow { transform: translateX(3px); }
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.6);
+      backdrop-filter: blur(4px); z-index: 1000;
+      display: none; align-items: flex-end; justify-content: center; padding: 0;
+    }
+    .modal-overlay.active { display: flex; }
+    @media (min-width: 640px) { .modal-overlay { align-items: center; padding: 20px; } }
+    .modal {
+      background: var(--brand-white); width: 100%; max-width: 480px;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      padding: 32px 28px 36px; position: relative;
+      animation: slideUp .22s cubic-bezier(.4,0,.2,1);
+    }
+    @media (min-width: 640px) { .modal { border-radius: var(--radius-lg); } }
+    @keyframes slideUp {
+      from { transform: translateY(32px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    .modal-close {
+      position: absolute; top: 16px; right: 16px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--neutral-100); border: 1.5px solid var(--neutral-200);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; cursor: pointer; transition: var(--transition); color: var(--neutral-500);
+    }
+    .modal-close:hover { background: var(--brand-black); color: var(--brand-white); border-color: var(--brand-black); }
+    .modal-logo { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+    .modal-logo img { height: 22px; filter: invert(1); }
+    .modal-logo-divider { font-size: 18px; color: var(--neutral-400); font-weight: 300; }
+    .modal-logo .nav-ebay { font-size: 18px; }
+    .modal h2 { font-size: 22px; font-weight: 800; letter-spacing: -0.02em; color: var(--brand-black); margin-bottom: 8px; }
+    .modal p.modal-sub { font-size: 13.5px; color: var(--neutral-500); line-height: 1.5; margin-bottom: 24px; }
+    .option-label { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--neutral-400); margin-bottom: 10px; }
+    .option-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+    .option-btn {
+      padding: 14px; border: 1.5px solid var(--neutral-200); border-radius: var(--radius-md);
+      text-align: left; cursor: pointer; transition: var(--transition);
+      background: var(--brand-white); font-family: var(--font);
+    }
+    .option-btn:hover { border-color: var(--brand-black); }
+    .option-btn.selected { border-color: var(--brand-black); background: var(--brand-black); }
+    .option-btn.selected .opt-title { color: var(--brand-white); }
+    .option-btn.selected .opt-sub   { color: var(--neutral-400); }
+    .opt-title { font-size: 13.5px; font-weight: 700; color: var(--brand-black); display: block; margin-bottom: 2px; }
+    .opt-sub   { font-size: 11px; color: var(--neutral-500); display: block; }
+    .modal-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+    .btn-ghost {
+      background: none; border: none; font-size: 13px; font-weight: 600;
+      color: var(--neutral-500); padding: 10px; text-align: center;
+      cursor: pointer; transition: var(--transition); font-family: var(--font);
+    }
+    .btn-ghost:hover { color: var(--brand-black); }
+    .spinner-ring {
+      width: 52px; height: 52px; border: 3px solid var(--neutral-200);
+      border-top-color: var(--brand-yellow); border-radius: 50%;
+      animation: spin 0.8s linear infinite; margin: 0 auto 20px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .success-icon {
+      width: 52px; height: 52px; border-radius: 50%; background: var(--brand-yellow);
+      display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto 20px;
+    }
+    .benefit-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--neutral-200); }
+    .benefit-row:last-child { border-bottom: none; }
+    .benefit-check {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: #f0fdf4; border: 1.5px solid #bbf7d0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; color: var(--accent-green); flex-shrink: 0; margin-top: 1px;
+    }
+    .benefit-row .b-title { font-size: 13.5px; font-weight: 700; color: var(--brand-black); display: block; }
+    .benefit-row .b-sub   { font-size: 12px; color: var(--neutral-500); }
+    footer { background: var(--brand-black); color: var(--brand-white); padding: 36px 32px; text-align: center; }
+    .footer-brand { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .footer-brand img { height: 22px; filter: brightness(0) invert(1); opacity: 0.9; }
+    .footer-divider { color: rgba(255,255,255,.3); font-weight: 300; font-size: 18px; }
+    .footer-links { display: flex; gap: 24px; justify-content: center; margin-bottom: 16px; }
+    .footer-links a { font-size: 13px; font-weight: 600; color: rgba(255,255,255,.5); transition: var(--transition); }
+    .footer-links a:hover { color: var(--brand-yellow); }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,.3); }
+    .powered-by { text-align: center; font-size: 11px; color: var(--neutral-400); margin-top: 16px; }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-900 min-h-screen">
+<body>
 
-  <!-- Nav -->
-  <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
-    <div class="max-w-5xl mx-auto px-6 py-3 flex items-center justify-between">
-      <div class="flex items-center gap-4">
-        <a href="https://joinfleek.com" target="_blank" class="flex items-center gap-2">
-          <img src="https://www.joinfleek.com/_next/static/media/Logo.6ba37d95.webp" alt="Fleek" class="h-8 w-auto">
-        </a>
-        <span class="text-gray-200 text-xl font-light">×</span>
-        <span class="font-black text-xl tracking-tight"><span style="color:#e53238">e</span><span style="color:#0064d2">B</span><span style="color:#f5af02">a</span><span style="color:#86b817">y</span></span>
-        <span class="hidden sm:inline text-xs font-semibold text-blue-700 bg-blue-50 px-2.5 py-1 rounded-full border border-blue-100">Partner Portal</span>
-      </div>
-      <div class="flex items-center gap-4">
-        <span class="text-sm text-gray-500 hidden sm:block">Welcome, <strong id="ud" class="text-gray-900">Partner</strong></span>
-        <button onclick="logout()" class="text-xs text-gray-500 hover:text-red-600 border border-gray-200 hover:border-red-200 rounded-lg px-3 py-1.5 transition-all">Sign out</button>
-      </div>
+  <nav>
+    <div class="nav-brand">
+      <img src="https://www.joinfleek.com/_next/static/media/Logo.6ba37d95.webp" alt="Fleek" />
+      <span class="nav-divider">×</span>
+      <div class="nav-ebay"><span>e</span><span>b</span><span>a</span><span>y</span></div>
+      <span class="nav-pill">Partner Portal</span>
     </div>
-  </header>
-  <div class="ebay-bar"></div>
+    <div class="nav-right">
+      <span class="nav-welcome">Welcome, <strong>Partner</strong></span>
+      <a href="#" class="nav-signout">Sign out</a>
+    </div>
+  </nav>
 
-  <!-- Hero -->
-  <section class="bg-white border-b border-gray-100">
-    <div class="max-w-5xl mx-auto px-6 py-12 text-center">
-      <p class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-3">Exclusive Partnership</p>
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-3 tracking-tight">Your Fleek × eBay Partner Portal</h1>
-      <p class="text-gray-500 text-base max-w-xl mx-auto leading-relaxed">Premium vintage stock sourced globally. Browse live drops, connect with verified suppliers, or speak directly with our commercial team.</p>
-    </div>
+  <section class="hero">
+    <div class="hero-badge">Exclusive Partnership</div>
+    <h1>Your Fleek × <span class="accent">eBay</span><br/>Partner Portal</h1>
+    <p class="hero-sub">Premium vintage stock sourced globally. Browse live drops, connect with verified suppliers, or speak directly with our commercial team.</p>
   </section>
 
-  <!-- Cards -->
-  <main class="max-w-5xl mx-auto px-6 py-10">
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+  <div class="trust-strip">
+    <div class="trust-item green"><div class="trust-icon">✔</div><span>Quality Checked — Graded A/B stock</span></div>
+    <div class="trust-item yellow"><div class="trust-icon">🛡</div><span>Buyer Protection — eBay guaranteed</span></div>
+    <div class="trust-item blue"><div class="trust-icon">✈</div><span>Air & Sea Shipping — 2–3 or 6–8 weeks</span></div>
+    <div class="trust-item"><div class="trust-icon">🌍</div><span>Global Suppliers — Verified & rated</span></div>
+  </div>
 
-      <!-- Stock Lists -->
-      <div class="card p-6 flex flex-col">
-        <div class="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-5">
-          <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-        </div>
-        <h2 class="text-base font-bold text-gray-900 mb-2">Active Stock Lists</h2>
-        <p class="text-sm text-gray-500 mb-6 leading-relaxed flex-1">Browse live inventory drops from our verified suppliers and place orders securely through eBay.</p>
-        <a href="stocks.html" class="btn-blue w-full py-3 rounded-lg font-semibold text-sm text-center block">View Stock Lists</a>
+  <main class="main">
+    <div class="section-label">Get started</div>
+    <div class="cards-grid">
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <h2>Active Stock Lists</h2>
+        <p>Browse live inventory drops from our verified suppliers and place orders securely through eBay.</p>
+        <a href="https://fleek-ebay-landing.vercel.app/stocks.html" class="btn btn-primary">View Stock Lists <span class="arrow">→</span></a>
       </div>
-
-      <!-- WhatsApp -->
-      <div class="card p-6 flex flex-col">
-        <div class="w-10 h-10 rounded-lg bg-green-50 flex items-center justify-center mb-5">
-          <svg class="w-5 h-5 text-green-600" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.108.547 4.087 1.502 5.817L.057 23.944 6.35 22.5A11.946 11.946 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.817 9.817 0 01-5.007-1.372l-.359-.214-3.72.976.993-3.624-.234-.372A9.815 9.815 0 012.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
-        </div>
-        <h2 class="text-base font-bold text-gray-900 mb-2">Speak to Our Team</h2>
-        <p class="text-sm text-gray-500 mb-6 leading-relaxed flex-1">Have questions? Chat directly with our commercial team on WhatsApp for fast, personalised support.</p>
-        <a href="https://wa.me/447767863494?text=Hi%20Fleek%20team%2C%20I%27m%20a%20Fleek%20x%20eBay%20partner%20and%20I%27d%20like%20to%20speak%20with%20the%20commercial%20team." target="_blank" class="btn-wa w-full py-3 rounded-lg font-semibold text-sm text-center block">Speak to Our Commercial Team</a>
+      <div class="card">
+        <div class="card-icon">💬</div>
+        <h2>Speak to Our Team</h2>
+        <p>Have questions? Chat directly with our commercial team on <strong>WhatsApp</strong> for fast, personalised support.</p>
+        <a href="https://wa.me/447767863494?text=Hi%20Fleek%20team%2C%20I%27m%20a%20Fleek%20x%20eBay%20partner%20and%20I%27d%20like%20to%20speak%20with%20the%20commercial%20team." class="btn btn-black" target="_blank" rel="noopener">Speak to Our Team <span class="arrow">→</span></a>
       </div>
-
-      <!-- Suppliers -->
-      <div class="card p-6 flex flex-col">
-        <div class="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center mb-5">
-          <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-        </div>
-        <h2 class="text-base font-bold text-gray-900 mb-2">Find Your Suppliers</h2>
-        <p class="text-sm text-gray-500 mb-6 leading-relaxed flex-1">Tell us what you need and we'll match you with the right suppliers for an instant introduction.</p>
-        <button onclick="openModal()" class="btn-dark w-full py-3 rounded-lg font-semibold text-sm text-center">Introduce Me to Suppliers</button>
-      </div>
-
-    </div>
-
-    <!-- Trust bar -->
-    <div class="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
-      <div class="bg-white rounded-lg border border-gray-100 p-3 flex items-center gap-3 shadow-sm">
-        <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <div><p class="text-xs font-semibold text-gray-800">Quality Checked</p><p class="text-xs text-gray-400">Graded A/B stock</p></div>
-      </div>
-      <div class="bg-white rounded-lg border border-gray-100 p-3 flex items-center gap-3 shadow-sm">
-        <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-        <div><p class="text-xs font-semibold text-gray-800">Buyer Protection</p><p class="text-xs text-gray-400">eBay guaranteed</p></div>
-      </div>
-      <div class="bg-white rounded-lg border border-gray-100 p-3 flex items-center gap-3 shadow-sm">
-        <svg class="w-5 h-5 text-indigo-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-        <div><p class="text-xs font-semibold text-gray-800">Air &amp; Sea Shipping</p><p class="text-xs text-gray-400">2-3 or 6-8 weeks</p></div>
-      </div>
-      <div class="bg-white rounded-lg border border-gray-100 p-3 flex items-center gap-3 shadow-sm">
-        <svg class="w-5 h-5 text-orange-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <div><p class="text-xs font-semibold text-gray-800">Global Suppliers</p><p class="text-xs text-gray-400">Verified &amp; rated</p></div>
+      <div class="card">
+        <div class="card-icon">🔍</div>
+        <h2>Find Your Suppliers</h2>
+        <p>Tell us what you need and we'll match you with the right suppliers for an instant introduction.</p>
+        <button class="btn btn-outline" onclick="openModal('supplierModal')">Introduce Me to Suppliers <span class="arrow">→</span></button>
       </div>
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="bg-white border-t border-gray-100 py-6 mt-4">
-    <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-      <div class="flex items-center gap-3">
-        <img src="https://www.joinfleek.com/_next/static/media/Logo.6ba37d95.webp" alt="Fleek" class="h-6 w-auto">
-        <span class="text-gray-300">×</span>
-        <span class="font-black text-lg"><span style="color:#e53238">e</span><span style="color:#0064d2">B</span><span style="color:#f5af02">a</span><span style="color:#86b817">y</span></span>
-      </div>
-      <p class="text-xs text-gray-400">© 2026 Fleek × eBay Partnership</p>
-      <div class="flex gap-4 text-xs">
-        <a href="https://joinfleek.com" target="_blank" class="text-gray-400 hover:text-blue-600 transition-colors">joinfleek.com</a>
-        <a href="https://ebay.com" target="_blank" class="text-gray-400 hover:text-blue-600 transition-colors">ebay.com</a>
-      </div>
+  <footer>
+    <div class="footer-brand">
+      <img src="https://www.joinfleek.com/_next/static/media/Logo.6ba37d95.webp" alt="Fleek" />
+      <span class="footer-divider">×</span>
+      <div class="nav-ebay" style="font-size:18px;"><span>e</span><span>b</span><span>a</span><span>y</span></div>
     </div>
+    <div class="footer-links">
+      <a href="https://joinfleek.com">joinfleek.com</a>
+      <a href="https://ebay.com">ebay.com</a>
+    </div>
+    <p class="footer-copy">© 2026 Fleek × eBay Partnership</p>
   </footer>
 
-  <!-- Supplier Intro Modal -->
-  <div class="modal-overlay" id="modal-overlay">
-    <div class="modal-box">
-      <!-- Step 1 -->
-      <div id="step-1">
-        <div class="flex items-center justify-between mb-6">
-          <h2 class="text-lg font-bold text-gray-900">Find Your Suppliers</h2>
-          <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-          </button>
-        </div>
-        <p class="text-sm text-gray-500 mb-6">Tell us what you're looking for and we'll connect you with the right suppliers.</p>
-        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">Order Type</p>
-        <div class="grid grid-cols-2 gap-3 mb-6">
-          <button class="opt-btn" id="opt-hp" onclick="pick('ot','hp',this)">
-            <div class="font-semibold text-sm text-gray-900 mb-0.5">Handpick</div>
-            <div class="text-xs text-gray-500">Curated selection</div>
-          </button>
-          <button class="opt-btn" id="opt-bk" onclick="pick('ot','bk',this)">
-            <div class="font-semibold text-sm text-gray-900 mb-0.5">Bulk Order</div>
-            <div class="text-xs text-gray-500">High volume</div>
-          </button>
-        </div>
-        <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">Category</p>
-        <div class="grid grid-cols-2 gap-3 mb-8">
-          <button class="opt-btn" id="opt-mn" onclick="pick('cat','mn',this)">
-            <div class="font-semibold text-sm text-gray-900 mb-0.5">Menswear</div>
-            <div class="text-xs text-gray-500">Men's vintage</div>
-          </button>
-          <button class="opt-btn" id="opt-wm" onclick="pick('cat','wm',this)">
-            <div class="font-semibold text-sm text-gray-900 mb-0.5">Womenswear</div>
-            <div class="text-xs text-gray-500">Women's vintage</div>
-          </button>
-        </div>
-        <button id="connect-btn" onclick="goChat()" disabled class="w-full py-3 rounded-lg font-semibold text-sm text-white bg-gray-300 cursor-not-allowed transition-all">Connect Me with Suppliers</button>
+  <!-- MODAL: FIND SUPPLIERS -->
+  <div class="modal-overlay" id="supplierModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeAllModals()">✕</button>
+      <div class="modal-logo">
+        <img src="https://www.joinfleek.com/_next/static/media/Logo.6ba37d95.webp" alt="Fleek" />
+        <span class="modal-logo-divider">×</span>
+        <div class="nav-ebay" style="font-size:18px;"><span>e</span><span>b</span><span>a</span><span>y</span></div>
       </div>
-
-      <!-- Step 2: Chat -->
-      <div id="step-2" class="hidden">
-        <div class="flex items-center justify-between mb-5">
-          <button onclick="showStep1()" class="text-sm text-blue-600 font-semibold hover:underline flex items-center gap-1">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-            Back
-          </button>
-          <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-          </button>
-        </div>
-        <div class="mb-5">
-          <h2 class="text-base font-bold text-gray-900 mb-1">You're connected</h2>
-          <p class="text-sm text-gray-500" id="match-info">Connecting...</p>
-        </div>
-        <div class="chat-container mb-4">
-          <div class="chat-messages" id="chat-msgs"></div>
-          <div class="chat-input-row">
-            <input id="chat-input" type="text" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" onkeydown="if(event.key==='Enter')trySend()">
-            <button onclick="trySend()" class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-semibold transition-colors">Send</button>
-            <!-- Account gate overlay on input row -->
-            <div class="account-gate" id="account-gate">
-              <div class="flex items-center gap-2 flex-1 min-w-0">
-                <img src="https://www.joinfleek.com/_next/static/media/Logo.6ba37d95.webp" alt="Fleek" class="h-5 w-auto flex-shrink-0">
-                <p class="text-xs text-gray-600 leading-tight">A <strong>Fleek account</strong> is required to message suppliers</p>
-              </div>
-              <button onclick="openFleekModal()" class="flex-shrink-0 bg-gray-900 hover:bg-gray-700 text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors whitespace-nowrap">Create Account</button>
-            </div>
-          </div>
-        </div>
-        <p class="text-xs text-center text-gray-400">Powered by Sendbird · Fleek × eBay Supplier Network</p>
+      <h2>Find Your Suppliers</h2>
+      <p class="modal-sub">Tell us what you're looking for and we'll connect you with the right suppliers.</p>
+      <div class="option-label">Order Type</div>
+      <div class="option-grid" id="orderTypeGrid">
+        <button class="option-btn" onclick="selectOption(this, 'orderTypeGrid')">
+          <span class="opt-title">Handpick</span><span class="opt-sub">Curated selection</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'orderTypeGrid')">
+          <span class="opt-title">Bulk Order</span><span class="opt-sub">High volume</span>
+        </button>
+      </div>
+      <div class="option-label">Category</div>
+      <div class="option-grid" id="categoryGrid">
+        <button class="option-btn" onclick="selectOption(this, 'categoryGrid')">
+          <span class="opt-title">Menswear</span><span class="opt-sub">Men's vintage</span>
+        </button>
+        <button class="option-btn" onclick="selectOption(this, 'categoryGrid')">
+          <span class="opt-title">Womenswear</span><span class="opt-sub">Women's vintage</span>
+        </button>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-primary" onclick="openModal('connectingModal')">Connect Me with Suppliers <span class="arrow">→</span></button>
+        <button class="btn-ghost" onclick="closeAllModals()">Back</button>
       </div>
     </div>
   </div>
 
-  <!-- Fleek Account Required Modal -->
-  <div class="modal-overlay" id="fleek-modal" style="z-index:200">
-    <div class="fleek-account-modal">
-      <div class="text-center mb-6">
-        <img src="https://www.joinfleek.com/_next/static/media/Logo.6ba37d95.webp" alt="Fleek" class="h-10 w-auto mx-auto mb-4">
-        <h2 class="text-xl font-bold text-gray-900 mb-2">Create your Fleek account</h2>
-        <p class="text-sm text-gray-500 leading-relaxed">To message suppliers directly, you'll need a free Fleek account. It only takes a minute to set up.</p>
+  <!-- MODAL: CONNECTING -->
+  <div class="modal-overlay" id="connectingModal">
+    <div class="modal" style="text-align:center;">
+      <button class="modal-close" onclick="closeAllModals()">✕</button>
+      <div id="connectingState">
+        <div class="spinner-ring"></div>
+        <h2>You're connected</h2>
+        <p class="modal-sub">Connecting you to the Fleek supplier network…</p>
       </div>
-      <div class="bg-gray-50 rounded-xl p-4 mb-6 space-y-3">
-        <div class="flex items-start gap-3">
-          <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-            <svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-          </div>
-          <div>
-            <p class="text-sm font-semibold text-gray-800">Message suppliers directly</p>
-            <p class="text-xs text-gray-500">Chat in real time with verified suppliers on the Fleek network</p>
-          </div>
+      <div id="connectedState" style="display:none;">
+        <div class="success-icon">✓</div>
+        <h2>Connected!</h2>
+        <p class="modal-sub" style="margin-bottom:16px;">You've been matched with verified suppliers. To message them directly you'll need a Fleek account.</p>
+        <button class="btn btn-primary" onclick="openModal('accountModal')" style="margin-top:0;">Create Account <span class="arrow">→</span></button>
+      </div>
+      <p class="powered-by">Powered by Sendbird · Fleek × eBay Supplier Network</p>
+    </div>
+  </div>
+
+  <!-- MODAL: CREATE ACCOUNT -->
+  <div class="modal-overlay" id="accountModal">
+    <div class="modal">
+      <button class="modal-close" onclick="closeAllModals()">✕</button>
+      <div class="modal-logo">
+        <img src="https://www.joinfleek.com/_next/static/media/Logo.6ba37d95.webp" alt="Fleek" />
+      </div>
+      <h2>Create your Fleek account</h2>
+      <p class="modal-sub">To message suppliers directly, you'll need a free Fleek account. It only takes a minute.</p>
+      <div>
+        <div class="benefit-row">
+          <div class="benefit-check">✓</div>
+          <div><span class="b-title">Message suppliers directly</span><span class="b-sub">Chat in real time with verified suppliers on the Fleek network</span></div>
         </div>
-        <div class="flex items-start gap-3">
-          <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-            <svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-          </div>
-          <div>
-            <p class="text-sm font-semibold text-gray-800">Access 1,000+ verified suppliers</p>
-            <p class="text-xs text-gray-500">Browse the full Fleek wholesale marketplace</p>
-          </div>
+        <div class="benefit-row">
+          <div class="benefit-check">✓</div>
+          <div><span class="b-title">Access 1,000+ verified suppliers</span><span class="b-sub">Browse the full Fleek wholesale marketplace</span></div>
         </div>
-        <div class="flex items-start gap-3">
-          <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
-            <svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-          </div>
-          <div>
-            <p class="text-sm font-semibold text-gray-800">Free to join</p>
-            <p class="text-xs text-gray-500">No subscription required to get started</p>
-          </div>
+        <div class="benefit-row">
+          <div class="benefit-check">✓</div>
+          <div><span class="b-title">Free to join</span><span class="b-sub">No subscription required to get started</span></div>
         </div>
       </div>
-      <a href="https://joinfleek.com" target="_blank" class="block w-full py-3 rounded-xl font-bold text-sm text-center text-white bg-gray-900 hover:bg-gray-700 transition-colors mb-3">Create a Free Fleek Account</a>
-      <button onclick="closeFleekModal()" class="block w-full py-2.5 rounded-xl font-semibold text-sm text-center text-gray-500 hover:text-gray-700 border border-gray-200 hover:border-gray-300 transition-colors">Maybe Later</button>
+      <div class="modal-actions" style="margin-top:24px;">
+        <a href="https://joinfleek.com" class="btn btn-primary" target="_blank">Create a Free Fleek Account <span class="arrow">→</span></a>
+        <button class="btn-ghost" onclick="closeAllModals()">Maybe Later</button>
+      </div>
     </div>
   </div>
 
   <script>
-    (function(){
-      var a = sessionStorage.getItem('fleek_auth');
-      if (!a) { window.location.href = 'index.html'; return; }
-      try {
-        var u = JSON.parse(a);
-        var el = document.getElementById('ud');
-        if (el && u.email) el.textContent = u.email.split('@')[0];
-      } catch(e) {}
-    })();
-
-    function logout() { sessionStorage.removeItem('fleek_auth'); window.location.href = 'index.html'; }
-
-    var sel = { ot: null, cat: null };
-    var hasFleekAccount = false; // mock: user does not have a Fleek account
-
-    function openModal() { document.getElementById('modal-overlay').classList.add('open'); }
-    function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); resetModal(); }
-    function resetModal() {
-      sel = { ot: null, cat: null };
-      document.querySelectorAll('.opt-btn').forEach(function(b) { b.classList.remove('selected'); });
-      var btn = document.getElementById('connect-btn');
-      btn.disabled = true;
-      btn.className = 'w-full py-3 rounded-lg font-semibold text-sm text-white bg-gray-300 cursor-not-allowed transition-all';
-      showStep1();
-    }
-    function showStep1() {
-      document.getElementById('step-1').classList.remove('hidden');
-      document.getElementById('step-2').classList.add('hidden');
-    }
-    function pick(type, val, el) {
-      sel[type] = val;
-      var group = type === 'ot' ? ['opt-hp', 'opt-bk'] : ['opt-mn', 'opt-wm'];
-      group.forEach(function(id) { document.getElementById(id).classList.remove('selected'); });
-      el.classList.add('selected');
-      var btn = document.getElementById('connect-btn');
-      if (sel.ot && sel.cat) {
-        btn.disabled = false;
-        btn.className = 'w-full py-3 rounded-lg font-semibold text-sm text-white bg-gray-900 hover:bg-gray-700 cursor-pointer transition-all';
+    function openModal(id) {
+      closeAllModals();
+      const modal = document.getElementById(id);
+      if (!modal) return;
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      if (id === 'connectingModal') {
+        const conn = document.getElementById('connectingState');
+        const done = document.getElementById('connectedState');
+        conn.style.display = 'block';
+        done.style.display = 'none';
+        setTimeout(() => {
+          conn.style.display = 'none';
+          done.style.display = 'block';
+        }, 1800);
       }
     }
 
-    var chats = {
-      'hp-mn': { supplier: 'thrift-kings', msgs: [
-        { from: 'thrift-kings', text: 'Hi! We specialise in handpicked menswear. Tell us your budget and preferred styles.' },
-        { from: 'Fleek Team', text: 'thrift-kings: 4.7 stars, 111 repeat buyers. Min order £100 (Air). What are you looking for?' }
-      ]},
-      'bk-mn': { supplier: 'thrift-kings', msgs: [
-        { from: 'thrift-kings', text: 'Hi! We have 500+ units of bulk menswear ready — Levis 501, Carhartt, Nike, Adidas and more.' },
-        { from: 'Fleek Team', text: 'thrift-kings has great availability right now. Min order £100 (Air). What categories interest you?' }
-      ]},
-      'hp-wm': { supplier: 'retro-thrift-store-1', msgs: [
-        { from: 'retro-thrift-store-1', text: 'Hi! We love handpicking womenswear — Y2K, knitwear, rugby shirts. What styles are you after?' },
-        { from: 'Fleek Team', text: 'Grade A/B womenswear stock available. Share your price range and we will curate something great.' }
-      ]},
-      'bk-wm': { supplier: 'retro-thrift-store-1', msgs: [
-        { from: 'retro-thrift-store-1', text: 'Hi! Y2K flared pants, skirts and branded knitwear available in bulk. Min 30% staple required.' },
-        { from: 'Fleek Team', text: 'retro-thrift-store-1 has a strong womenswear range. Can send a full sample list on request.' }
-      ]}
-    };
-
-    function goChat() {
-      if (!sel.ot || !sel.cat) return;
-      var key = sel.ot + '-' + sel.cat;
-      var ch = chats[key];
-      document.getElementById('match-info').textContent = 'Connected with: ' + ch.supplier;
-      document.getElementById('step-1').classList.add('hidden');
-      document.getElementById('step-2').classList.remove('hidden');
-      var msgs = document.getElementById('chat-msgs');
-      msgs.innerHTML = '';
-      appendSystem(msgs, 'You have been matched with ' + ch.supplier + '.');
-      setTimeout(function() { appendMsg(msgs, ch.msgs[0].from, ch.msgs[0].text); }, 600);
-      setTimeout(function() { if (ch.msgs[1]) appendMsg(msgs, ch.msgs[1].from, ch.msgs[1].text); }, 1400);
+    function closeAllModals() {
+      document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
+      document.body.style.overflow = '';
     }
 
-    function trySend() {
-      if (!hasFleekAccount) {
-        openFleekModal();
-        return;
-      }
-      sendMsg();
+    document.querySelectorAll('.modal-overlay').forEach(overlay => {
+      overlay.addEventListener('click', e => {
+        if (e.target === overlay) closeAllModals();
+      });
+    });
+
+    function selectOption(btn, gridId) {
+      document.querySelectorAll(`#${gridId} .option-btn`).forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
     }
 
-    function openFleekModal() {
-      document.getElementById('fleek-modal').classList.add('open');
-    }
-    function closeFleekModal() {
-      document.getElementById('fleek-modal').classList.remove('open');
-    }
-
-    function appendSystem(container, text) {
-      var d = document.createElement('div');
-      d.className = 'text-center text-xs text-gray-400 bg-gray-100 rounded-full px-3 py-1 mx-auto';
-      d.style.maxWidth = '90%';
-      d.textContent = text;
-      container.appendChild(d);
-      container.scrollTop = container.scrollHeight;
-    }
-    function appendMsg(container, sender, text) {
-      var d = document.createElement('div');
-      d.className = 'flex gap-2 items-start';
-      var av = document.createElement('div');
-      av.className = 'w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 text-white';
-      av.style.background = sender.includes('Fleek') ? '#0064d2' : '#111';
-      av.textContent = sender.charAt(0).toUpperCase();
-      var wrap = document.createElement('div');
-      wrap.className = 'flex-1 min-w-0';
-      var nm = document.createElement('div');
-      nm.className = 'text-xs text-gray-400 mb-1 font-medium';
-      nm.textContent = sender;
-      var bubble = document.createElement('div');
-      bubble.className = 'bg-white border border-gray-200 rounded-xl rounded-tl-none px-3 py-2 text-sm text-gray-800 shadow-sm';
-      bubble.textContent = text;
-      wrap.appendChild(nm); wrap.appendChild(bubble);
-      d.appendChild(av); d.appendChild(wrap);
-      container.appendChild(d);
-      container.scrollTop = container.scrollHeight;
-    }
-    function appendUserMsg(container, text) {
-      var d = document.createElement('div');
-      d.className = 'flex gap-2 items-start flex-row-reverse';
-      var av = document.createElement('div');
-      av.className = 'w-7 h-7 rounded-full bg-blue-600 flex items-center justify-center text-xs font-bold text-white flex-shrink-0';
-      av.textContent = 'Y';
-      var bubble = document.createElement('div');
-      bubble.className = 'bg-blue-600 text-white rounded-xl rounded-tr-none px-3 py-2 text-sm';
-      bubble.textContent = text;
-      d.appendChild(av); d.appendChild(bubble);
-      container.appendChild(d);
-      container.scrollTop = container.scrollHeight;
-    }
-    var replies = [
-      'Thanks for that — checking availability now.',
-      'Great, can you share more about your budget?',
-      'Perfect. I will put a selection together shortly.',
-      'Understood — what is your timeline for delivery?'
-    ];
-    function sendMsg() {
-      var inp = document.getElementById('chat-input');
-      var text = inp.value.trim();
-      if (!text) return;
-      var msgs = document.getElementById('chat-msgs');
-      appendUserMsg(msgs, text);
-      inp.value = '';
-      setTimeout(function() { appendMsg(msgs, 'Supplier', replies[Math.floor(Math.random() * replies.length)]); }, 900);
-    }
-
-    document.getElementById('modal-overlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
-    document.getElementById('fleek-modal').addEventListener('click', function(e) { if (e.target === this) closeFleekModal(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeAllModals();
+    });
   </script>
 </body>
 </html>
