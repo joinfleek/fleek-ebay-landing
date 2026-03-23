@@ -1,82 +1,79 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fleek x eBay | Partner Login</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    .ebay-gradient{background:linear-gradient(135deg,#e53238 0%,#f5af02 33%,#86b817 66%,#0064d2 100%)}
-    .login-card{background:#fff;border-radius:1.5rem;padding:2.5rem;box-shadow:0 20px 60px rgba(0,0,0,.12);width:100%;max-width:420px}
-    .inp{width:100%;border:1.5px solid #e5e7eb;border-radius:.75rem;padding:.75rem 1rem;font-size:.9375rem;transition:border-color .2s;outline:none;box-sizing:border-box}
-    .inp:focus{border-color:#0064d2;box-shadow:0 0 0 3px rgba(0,100,210,.12)}
-    .btn-login{width:100%;background:#0064d2;color:#fff;border:0;border-radius:.75rem;padding:.875rem;font-size:.9375rem;font-weight:800;cursor:pointer;transition:all .2s}
-    .btn-login:hover{background:#0050a8;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,100,210,.3)}
-    .err{background:#fef2f2;border:1px solid #fecaca;color:#dc2626;border-radius:.75rem;padding:.75rem 1rem;font-size:.875rem;display:none;margin-bottom:1rem}
-    .err.show{display:block}
-    @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
-    .shake{animation:shake .4s ease}
-    </style>
-  </head>
-  <body class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex flex-col">
-    <div class="ebay-gradient h-1"></div>div>
-    <div class="flex-1 flex flex-col items-center justify-center px-4 py-12">
-      <div class="login-card">
-        <div class="text-center mb-8">
-          <div class="flex items-center justify-center gap-3 mb-4">
-            <span class="text-2xl">&#11088;</span>span>
-            <span class="font-black text-2xl text-gray-900">FLEEK</span>span>
-            <span class="text-gray-300 text-2xl">x</span>span>
-            <span class="font-black text-2xl"><span style="color:#e53238">e</span>span><span style="color:#0064d2">B</span>span><span style="color:#f5af02">a</span>span><span style="color:#86b817">y</span>span></span>span>
-          </div>div>
-          <h1 class="text-xl font-black text-gray-900 mb-1">Partner Portal</h1>h1>
-          <p class="text-sm text-gray-500">Sign in to access your exclusive partner dashboard</p>p>
-        </div>div>
-        <div id="err" class="err">&#10060; Invalid email or password. Please try again.</div>div>
-        <form onsubmit="doLogin(event)">
-          <div class="mb-4">
-            <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Email Address</label>label>
-            <input id="em" type="email" class="inp" placeholder="your@email.com" autocomplete="email" required>
-          </div>div>
-          <div class="mb-6">
-            <label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Password</label>label>
-            <input id="pw" type="password" class="inp" placeholder="Enter your password" autocomplete="current-password" required>
-          </div>div>
-          <button type="submit" class="btn-login" id="lb">Sign In &#8594;</button>button>
-        </form>form>
-        <div class="mt-6 pt-6 border-t border-gray-100 text-center">
-          <p class="text-xs text-gray-400">Secured by Fleek x eBay Partnership</p>p>
-          <p class="text-xs text-gray-300 mt-1">&#9989; Grade A/B Stock &nbsp;|&nbsp; &#128737; eBay Protected &nbsp;|&nbsp; &#9992; Global Shipping</p>p>
-        </div>div>
-      </div>div>
-    </div>div>
-    <div class="pb-6 text-center">
-      <p class="text-xs text-gray-400">&#169; 2026 Fleek x eBay &middot; <a href="https://joinfleek.com" target="_blank" class="hover:text-blue-600">joinfleek.com</a>a></p>p>
-    </div>div>
-    <script>
-      (function(){var a=sessionStorage.getItem('fleek_auth');if(a){try{JSON.parse(a);window.location.href='home.html';return;}catch(e){}}})();
-      function doLogin(e){
-        e.preventDefault();
-        var em=document.getElementById('em').value.trim().toLowerCase();
-        var pw=document.getElementById('pw').value;
-        var err=document.getElementById('err');
-        var card=document.querySelector('.login-card');
-        if(em==='jac@ebay.com'&&pw==='ebayfleek'){
-          var lb=document.getElementById('lb');lb.textContent='Signing in...';lb.disabled=true;lb.style.opacity='0.8';
-          sessionStorage.setItem('fleek_auth',JSON.stringify({email:em,ts:Date.now()}));
-          setTimeout(function(){window.location.href='home.html';},600);
-        }else{
-          err.classList.add('show');
-          card.classList.add('shake');
-          setTimeout(function(){card.classList.remove('shake');},400);
-          document.getElementById('pw').value='';
-        }
-      }
-      document.getElementById('em').addEventListener('input',function(){document.getElementById('err').classList.remove('show');});
-      document.getElementById('pw').addEventListener('input',function(){document.getElementById('err').classList.remove('show');});
-    </script>
-  </body>body>
-</html>html>
-    </script>
-  </style></title>
-  </head>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fleek x eBay | Partner Login</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+.ebay-gradient{background:linear-gradient(135deg,#e53238 0%,#f5af02 33%,#86b817 66%,#0064d2 100%)}
+.login-card{background:#fff;border-radius:1.5rem;padding:2.5rem;box-shadow:0 20px 60px rgba(0,0,0,.12);width:100%;max-width:420px}
+.inp{width:100%;border:1.5px solid #e5e7eb;border-radius:.75rem;padding:.75rem 1rem;font-size:.9375rem;transition:border-color .2s;outline:none;box-sizing:border-box}
+.inp:focus{border-color:#0064d2;box-shadow:0 0 0 3px rgba(0,100,210,.12)}
+.btn-login{width:100%;background:#0064d2;color:#fff;border:0;border-radius:.75rem;padding:.875rem;font-size:.9375rem;font-weight:800;cursor:pointer;transition:all .2s}
+.btn-login:hover{background:#0050a8;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,100,210,.3)}
+.err{background:#fef2f2;border:1px solid #fecaca;color:#dc2626;border-radius:.75rem;padding:.75rem 1rem;font-size:.875rem;display:none;margin-bottom:1rem}
+.err.show{display:block}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.shake{animation:shake .4s ease}
+</style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 flex flex-col">
+<div class="ebay-gradient h-1"></div>
+<div class="flex-1 flex flex-col items-center justify-center px-4 py-12">
+<div class="login-card">
+<div class="text-center mb-8">
+<div class="flex items-center justify-center gap-3 mb-4">
+<span class="text-2xl">⭐</span>
+<span class="font-black text-2xl text-gray-900">FLEEK</span>
+<span class="text-gray-300 text-2xl">×</span>
+<span class="font-black text-2xl"><span style="color:#e53238">e</span><span style="color:#0064d2">B</span><span style="color:#f5af02">a</span><span style="color:#86b817">y</span></span>
+</div>
+<h1 class="text-xl font-black text-gray-900 mb-1">Partner Portal</h1>
+<p class="text-sm text-gray-500">Sign in to access your exclusive partner dashboard</p>
+</div>
+<div id="err" class="err">❌ Invalid email or password. Please try again.</div>
+<form onsubmit="doLogin(event)">
+<div class="mb-4">
+<label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Email Address</label>
+<input id="em" type="email" class="inp" placeholder="your@email.com" autocomplete="email" required>
+</div>
+<div class="mb-6">
+<label class="block text-xs font-bold uppercase tracking-wider text-gray-500 mb-2">Password</label>
+<input id="pw" type="password" class="inp" placeholder="Enter your password" autocomplete="current-password" required>
+</div>
+<button type="submit" class="btn-login" id="lb">Sign In →</button>
+</form>
+<div class="mt-6 pt-6 border-t border-gray-100 text-center">
+<p class="text-xs text-gray-400">Secured by Fleek × eBay Partnership</p>
+<p class="text-xs text-gray-300 mt-1">✅ Grade A/B Stock | 🛡 eBay Protected | ✈ Global Shipping</p>
+</div>
+</div>
+</div>
+<div class="pb-6 text-center">
+<p class="text-xs text-gray-400">© 2026 Fleek × eBay · <a href="https://joinfleek.com" target="_blank" class="hover:text-blue-600">joinfleek.com</a></p>
+</div>
+<script>
+(function(){var a=sessionStorage.getItem('fleek_auth');if(a){try{JSON.parse(a);window.location.href='home.html';return;}catch(e){}}})();
+function doLogin(e){
+e.preventDefault();
+var em=document.getElementById('em').value.trim().toLowerCase();
+var pw=document.getElementById('pw').value;
+var err=document.getElementById('err');
+var card=document.querySelector('.login-card');
+if(em==='jac@ebay.com'&&pw==='ebayfleek'){
+var lb=document.getElementById('lb');lb.textContent='Signing in...';lb.disabled=true;lb.style.opacity='0.8';
+sessionStorage.setItem('fleek_auth',JSON.stringify({email:em,ts:Date.now()}));
+setTimeout(function(){window.location.href='home.html';},600);
+}else{
+err.classList.add('show');
+card.classList.add('shake');
+setTimeout(function(){card.classList.remove('shake');},400);
+document.getElementById('pw').value='';
+}
+}
+document.getElementById('em').addEventListener('input',function(){document.getElementById('err').classList.remove('show');});
+document.getElementById('pw').addEventListener('input',function(){document.getElementById('err').classList.remove('show');});
+</script>
+</body>
+</html>
