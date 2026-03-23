@@ -25,8 +25,9 @@
     .opt-btn.selected { border-color: #0064d2; background: #eff6ff; }
     .chat-container { background: #f8f9fb; border: 1px solid #e5e7eb; border-radius: 10px; display: flex; flex-direction: column; }
     .chat-messages { padding: 1rem; overflow-y: auto; max-height: 220px; min-height: 120px; display: flex; flex-direction: column; gap: .75rem; }
-    .chat-input-row { padding: .75rem; border-top: 1px solid #e5e7eb; display: flex; gap: .5rem; }
-    .badge { display: inline-flex; align-items: center; gap: .375rem; font-size: .7rem; font-weight: 600; padding: .25rem .625rem; border-radius: 999px; }
+    .chat-input-row { padding: .75rem; border-top: 1px solid #e5e7eb; display: flex; gap: .5rem; position: relative; }
+    .account-gate { position: absolute; inset: 0; background: rgba(255,255,255,.92); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; border-radius: 0 0 10px 10px; border-top: 1px solid #e5e7eb; padding: .75rem 1rem; gap: .75rem; }
+    .fleek-account-modal { background: #fff; border-radius: 16px; padding: 2rem; max-width: 400px; width: 100%; box-shadow: 0 24px 64px rgba(0,0,0,.18); }
   </style>
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen">
@@ -132,10 +133,10 @@
     </div>
   </footer>
 
-  <!-- Supplier Modal -->
+  <!-- Supplier Intro Modal -->
   <div class="modal-overlay" id="modal-overlay">
     <div class="modal-box">
-      <!-- Step 1: Selection -->
+      <!-- Step 1 -->
       <div id="step-1">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-lg font-bold text-gray-900">Find Your Suppliers</h2>
@@ -144,7 +145,6 @@
           </button>
         </div>
         <p class="text-sm text-gray-500 mb-6">Tell us what you're looking for and we'll connect you with the right suppliers.</p>
-
         <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">Order Type</p>
         <div class="grid grid-cols-2 gap-3 mb-6">
           <button class="opt-btn" id="opt-hp" onclick="pick('ot','hp',this)">
@@ -156,7 +156,6 @@
             <div class="text-xs text-gray-500">High volume</div>
           </button>
         </div>
-
         <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">Category</p>
         <div class="grid grid-cols-2 gap-3 mb-8">
           <button class="opt-btn" id="opt-mn" onclick="pick('cat','mn',this)">
@@ -168,7 +167,6 @@
             <div class="text-xs text-gray-500">Women's vintage</div>
           </button>
         </div>
-
         <button id="connect-btn" onclick="goChat()" disabled class="w-full py-3 rounded-lg font-semibold text-sm text-white bg-gray-300 cursor-not-allowed transition-all">Connect Me with Suppliers</button>
       </div>
 
@@ -190,12 +188,62 @@
         <div class="chat-container mb-4">
           <div class="chat-messages" id="chat-msgs"></div>
           <div class="chat-input-row">
-            <input id="chat-input" type="text" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" onkeydown="if(event.key==='Enter')sendMsg()">
-            <button onclick="sendMsg()" class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-semibold transition-colors">Send</button>
+            <input id="chat-input" type="text" placeholder="Type a message..." class="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400" onkeydown="if(event.key==='Enter')trySend()">
+            <button onclick="trySend()" class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4 py-2 text-sm font-semibold transition-colors">Send</button>
+            <!-- Account gate overlay on input row -->
+            <div class="account-gate" id="account-gate">
+              <div class="flex items-center gap-2 flex-1 min-w-0">
+                <img src="https://www.joinfleek.com/_next/static/media/Logo.6ba37d95.webp" alt="Fleek" class="h-5 w-auto flex-shrink-0">
+                <p class="text-xs text-gray-600 leading-tight">A <strong>Fleek account</strong> is required to message suppliers</p>
+              </div>
+              <button onclick="openFleekModal()" class="flex-shrink-0 bg-gray-900 hover:bg-gray-700 text-white text-xs font-semibold px-3 py-2 rounded-lg transition-colors whitespace-nowrap">Create Account</button>
+            </div>
           </div>
         </div>
         <p class="text-xs text-center text-gray-400">Powered by Sendbird · Fleek × eBay Supplier Network</p>
       </div>
+    </div>
+  </div>
+
+  <!-- Fleek Account Required Modal -->
+  <div class="modal-overlay" id="fleek-modal" style="z-index:200">
+    <div class="fleek-account-modal">
+      <div class="text-center mb-6">
+        <img src="https://www.joinfleek.com/_next/static/media/Logo.6ba37d95.webp" alt="Fleek" class="h-10 w-auto mx-auto mb-4">
+        <h2 class="text-xl font-bold text-gray-900 mb-2">Create your Fleek account</h2>
+        <p class="text-sm text-gray-500 leading-relaxed">To message suppliers directly, you'll need a free Fleek account. It only takes a minute to set up.</p>
+      </div>
+      <div class="bg-gray-50 rounded-xl p-4 mb-6 space-y-3">
+        <div class="flex items-start gap-3">
+          <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-gray-800">Message suppliers directly</p>
+            <p class="text-xs text-gray-500">Chat in real time with verified suppliers on the Fleek network</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-gray-800">Access 1,000+ verified suppliers</p>
+            <p class="text-xs text-gray-500">Browse the full Fleek wholesale marketplace</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3">
+          <div class="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <svg class="w-3.5 h-3.5 text-green-600" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-gray-800">Free to join</p>
+            <p class="text-xs text-gray-500">No subscription required to get started</p>
+          </div>
+        </div>
+      </div>
+      <a href="https://joinfleek.com" target="_blank" class="block w-full py-3 rounded-xl font-bold text-sm text-center text-white bg-gray-900 hover:bg-gray-700 transition-colors mb-3">Create a Free Fleek Account</a>
+      <button onclick="closeFleekModal()" class="block w-full py-2.5 rounded-xl font-semibold text-sm text-center text-gray-500 hover:text-gray-700 border border-gray-200 hover:border-gray-300 transition-colors">Maybe Later</button>
     </div>
   </div>
 
@@ -210,12 +258,10 @@
       } catch(e) {}
     })();
 
-    function logout() {
-      sessionStorage.removeItem('fleek_auth');
-      window.location.href = 'index.html';
-    }
+    function logout() { sessionStorage.removeItem('fleek_auth'); window.location.href = 'index.html'; }
 
     var sel = { ot: null, cat: null };
+    var hasFleekAccount = false; // mock: user does not have a Fleek account
 
     function openModal() { document.getElementById('modal-overlay').classList.add('open'); }
     function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); resetModal(); }
@@ -276,6 +322,21 @@
       setTimeout(function() { if (ch.msgs[1]) appendMsg(msgs, ch.msgs[1].from, ch.msgs[1].text); }, 1400);
     }
 
+    function trySend() {
+      if (!hasFleekAccount) {
+        openFleekModal();
+        return;
+      }
+      sendMsg();
+    }
+
+    function openFleekModal() {
+      document.getElementById('fleek-modal').classList.add('open');
+    }
+    function closeFleekModal() {
+      document.getElementById('fleek-modal').classList.remove('open');
+    }
+
     function appendSystem(container, text) {
       var d = document.createElement('div');
       d.className = 'text-center text-xs text-gray-400 bg-gray-100 rounded-full px-3 py-1 mx-auto';
@@ -284,7 +345,6 @@
       container.appendChild(d);
       container.scrollTop = container.scrollHeight;
     }
-
     function appendMsg(container, sender, text) {
       var d = document.createElement('div');
       d.className = 'flex gap-2 items-start';
@@ -300,14 +360,11 @@
       var bubble = document.createElement('div');
       bubble.className = 'bg-white border border-gray-200 rounded-xl rounded-tl-none px-3 py-2 text-sm text-gray-800 shadow-sm';
       bubble.textContent = text;
-      wrap.appendChild(nm);
-      wrap.appendChild(bubble);
-      d.appendChild(av);
-      d.appendChild(wrap);
+      wrap.appendChild(nm); wrap.appendChild(bubble);
+      d.appendChild(av); d.appendChild(wrap);
       container.appendChild(d);
       container.scrollTop = container.scrollHeight;
     }
-
     function appendUserMsg(container, text) {
       var d = document.createElement('div');
       d.className = 'flex gap-2 items-start flex-row-reverse';
@@ -317,19 +374,16 @@
       var bubble = document.createElement('div');
       bubble.className = 'bg-blue-600 text-white rounded-xl rounded-tr-none px-3 py-2 text-sm';
       bubble.textContent = text;
-      d.appendChild(av);
-      d.appendChild(bubble);
+      d.appendChild(av); d.appendChild(bubble);
       container.appendChild(d);
       container.scrollTop = container.scrollHeight;
     }
-
     var replies = [
       'Thanks for that — checking availability now.',
       'Great, can you share more about your budget?',
       'Perfect. I will put a selection together shortly.',
       'Understood — what is your timeline for delivery?'
     ];
-
     function sendMsg() {
       var inp = document.getElementById('chat-input');
       var text = inp.value.trim();
@@ -337,14 +391,11 @@
       var msgs = document.getElementById('chat-msgs');
       appendUserMsg(msgs, text);
       inp.value = '';
-      setTimeout(function() {
-        appendMsg(msgs, 'Supplier', replies[Math.floor(Math.random() * replies.length)]);
-      }, 900);
+      setTimeout(function() { appendMsg(msgs, 'Supplier', replies[Math.floor(Math.random() * replies.length)]); }, 900);
     }
 
-    document.getElementById('modal-overlay').addEventListener('click', function(e) {
-      if (e.target === this) closeModal();
-    });
+    document.getElementById('modal-overlay').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+    document.getElementById('fleek-modal').addEventListener('click', function(e) { if (e.target === this) closeFleekModal(); });
   </script>
 </body>
 </html>
