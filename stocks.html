@@ -1,245 +1,581 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fleek x eBay | Active Stock List Drops</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<style>
-@keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
-.animate-marquee{animation:marquee 25s linear infinite}
-@keyframes pulse-badge{0%,100%{opacity:1}50%{opacity:.7}}
-.pulse-badge{animation:pulse-badge 2s ease-in-out infinite}
-.ebay-gradient{background:linear-gradient(135deg,#e53238 0%,#f5af02 33%,#86b817 66%,#0064d2 100%)}
-.ch{transition:all .2s ease}.ch:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,0,0,.12)}
-.qi::-webkit-inner-spin-button,.qi::-webkit-outer-spin-button{-webkit-appearance:none}.qi{-moz-appearance:textfield}
-.gb{font-size:.65rem;padding:1px 6px;border-radius:9999px;font-weight:700}
-.sb{padding:.5rem 1rem;border-radius:.5rem;font-size:.75rem;font-weight:600;border:1.5px solid #e5e7eb;background:#fff;cursor:pointer;transition:all .15s}
-.sb.sel{background:#0064d2;color:#fff;border-color:#0064d2}
-.pg-idx,.pg-inv{display:none}.pg-idx.active,.pg-inv.active{display:block}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fleek x eBay | Active Stock Lists</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Inter', sans-serif; }
+    .ebay-bar { background: linear-gradient(90deg, #e53238, #f5af02, #86b817, #0064d2); height: 3px; }
+    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+    .animate-marquee { animation: marquee 30s linear infinite; }
+    .supplier-card { background:#fff; border-radius:12px; border:1px solid #e5e7eb; transition: box-shadow .2s, transform .15s; cursor:pointer; }
+    .supplier-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,.09); transform: translateY(-2px); }
+    .prod-card { background:#fff; border-radius:10px; border:1px solid #e5e7eb; transition: box-shadow .15s; }
+    .prod-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,.07); }
+    .sb { padding:.4rem .875rem; border-radius:.5rem; font-size:.75rem; font-weight:600; border:1.5px solid #e5e7eb; background:#fff; cursor:pointer; transition:all .15s; }
+    .sb.sel { background:#111; color:#fff; border-color:#111; }
+    .qi::-webkit-inner-spin-button, .qi::-webkit-outer-spin-button { -webkit-appearance:none; }
+    .qi { -moz-appearance:textfield; }
+    .grade-a { background:#dcfce7; color:#166534; }
+    .grade-ab { background:#dbeafe; color:#1e40af; }
+    .grade-abc { background:#fff7ed; color:#9a3412; }
+    .filter-btn { padding:.375rem .875rem; border-radius:.5rem; font-size:.75rem; font-weight:600; border:1.5px solid #e5e7eb; background:#fff; cursor:pointer; transition:all .15s; }
+    .filter-btn.active { background:#111; color:#fff; border-color:#111; }
+    .pg-idx, .pg-inv { display:none; }
+    .pg-idx.active, .pg-inv.active { display:block; }
+    .dot-live { width:8px; height:8px; border-radius:50%; background:#22c55e; display:inline-block; animation: pulse-dot 2s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
+  </style>
 </head>
 <body class="bg-gray-50 text-gray-900 min-h-screen">
-<div class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-<div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
-<div class="flex items-center gap-3">
-<a href="home.html" class="text-xs text-blue-600 hover:text-blue-800 font-semibold mr-1">← Portal</a>
-<span class="text-gray-300">|</span>
-<span class="text-xl">⭐</span>
-<span class="font-black text-lg" style="color:#1a1a1a">FLEEK</span>
-<span class="text-gray-300 text-xl">×</span>
-<span class="font-black text-xl"><span style="color:#e53238">e</span><span style="color:#0064d2">B</span><span style="color:#f5af02">a</span><span style="color:#86b817">y</span></span>
-<span id="nav-title" class="hidden sm:block text-sm font-semibold text-gray-600 ml-2">Stock List Drops</span>
+
+<!-- Top nav -->
+<header class="bg-white border-b border-gray-200 sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <a href="home.html" class="text-xs font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        Portal
+      </a>
+      <span class="text-gray-200">|</span>
+      <img src="https://www.joinfleek.com/_next/static/media/Logo.6ba37d95.webp" alt="Fleek" class="h-7 w-auto">
+      <span class="text-gray-200 font-light">×</span>
+      <span class="font-black text-lg"><span style="color:#e53238">e</span><span style="color:#0064d2">B</span><span style="color:#f5af02">a</span><span style="color:#86b817">y</span></span>
+    </div>
+    <div class="hidden sm:flex items-center gap-3 text-sm text-gray-500">
+      <span class="flex items-center gap-2"><span class="dot-live"></span>Drop Active</span>
+      <span class="text-gray-300">·</span>
+      <span class="font-medium text-gray-700">29 viewing now</span>
+    </div>
+    <button onclick="scrollToOrder()" id="nav-cta" class="hidden bg-gray-900 hover:bg-gray-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">Place Order</button>
+  </div>
+</header>
+<div class="ebay-bar"></div>
+
+<!-- Ticker -->
+<div class="bg-white border-b border-gray-100 overflow-hidden py-2">
+  <div class="animate-marquee whitespace-nowrap flex items-center gap-10 text-xs font-medium text-gray-500">
+    <span>Grade A/B Stock</span><span class="text-gray-200">·</span>
+    <span>Air Shipping: 2-3 Weeks</span><span class="text-gray-200">·</span>
+    <span>Sea Shipping: 6-8 Weeks</span><span class="text-gray-200">·</span>
+    <span>Bulk Discounts Available</span><span class="text-gray-200">·</span>
+    <span>Fleek × eBay Exclusive</span><span class="text-gray-200">·</span>
+    <span>5% Off Orders Over £4,000</span><span class="text-gray-200">·</span>
+    <span>201 Orders Placed</span><span class="text-gray-200">·</span>
+    <span>Grade A/B Stock</span><span class="text-gray-200">·</span>
+    <span>Air Shipping: 2-3 Weeks</span><span class="text-gray-200">·</span>
+    <span>Sea Shipping: 6-8 Weeks</span><span class="text-gray-200">·</span>
+    <span>Bulk Discounts Available</span><span class="text-gray-200">·</span>
+    <span>Fleek × eBay Exclusive</span><span class="text-gray-200">·</span>
+    <span>5% Off Orders Over £4,000</span><span class="text-gray-200">·</span>
+    <span>201 Orders Placed</span>
+  </div>
 </div>
-<div class="hidden sm:flex items-center gap-4 text-sm text-gray-600">
-<span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-green-500 pulse-badge inline-block"></span>Drop Active</span>
-<span class="font-medium">29 viewing now</span>
-</div>
-<a href="#" id="nav-cta" class="hidden bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold px-4 py-2 rounded-full" onclick="scrollToOrder();return false;">Place Order →</a>
-</div>
-</div>
-<div class="overflow-hidden py-2 border-b" style="background:linear-gradient(90deg,#fff9e6,#fff)">
-<div class="animate-marquee whitespace-nowrap flex items-center gap-12 text-sm font-medium text-gray-700">
-<span>✅ Quality Checked</span><span>🛡️ Buyer Protection</span><span>✈️ Air: 2-3 Wks</span><span>🚢 Sea: 6-8 Wks</span><span>📦 Bulk Discounts</span><span>⭐ Fleek x eBay Drop</span><span>💰 5% Off Over £4,000</span><span>🔥 201 Orders Placed</span><span>✅ Quality Checked</span><span>🛡️ Buyer Protection</span><span>✈️ Air: 2-3 Wks</span><span>🚢 Sea: 6-8 Wks</span><span>📦 Bulk Discounts</span><span>⭐ Fleek x eBay Drop</span>
-</div>
-</div>
+<!-- INDEX PAGE -->
 <div id="pg-idx" class="pg-idx active">
-<div class="ebay-gradient py-1"></div>
-<div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-<div class="mb-2"><span class="text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Exclusive Partnership</span></div>
-<h1 class="text-3xl font-black text-gray-900">Active Stock List Drops</h1>
-<p class="text-orange-500 font-bold mt-1">🔥 Winter Deals at Retail Prices ❄️ Shop Now Before They're Gone!</p>
-<p class="text-gray-500 mt-1">Choose a supplier to view their current inventory and place orders.</p>
-<div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3">
-<div class="bg-white rounded-xl border border-gray-200 p-4 text-center shadow-sm"><div class="text-2xl mb-1">✅</div><p class="text-sm font-semibold">Quality Checked</p><p class="text-xs text-gray-500">Thoroughly graded</p></div>
-<div class="bg-white rounded-xl border border-gray-200 p-4 text-center shadow-sm"><div class="text-2xl mb-1">🛡️</div><p class="text-sm font-semibold">Buyer Protection</p><p class="text-xs text-gray-500">eBay guaranteed</p></div>
-<div class="bg-white rounded-xl border border-gray-200 p-4 text-center shadow-sm"><div class="text-2xl mb-1">✈️🚢</div><p class="text-sm font-semibold">Air &amp; Sea Shipping</p><p class="text-xs text-gray-500">2-3 wks or 6-8 wks</p></div>
-<div class="bg-white rounded-xl border border-gray-200 p-4 text-center shadow-sm"><div class="text-2xl mb-1">💬</div><p class="text-sm font-semibold">Dedicated Support</p><p class="text-xs text-gray-500">Fleek team on call</p></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <div class="mb-6">
+      <p class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-2">Exclusive Partnership</p>
+      <h1 class="text-2xl font-extrabold text-gray-900 mb-1">Active Stock Lists</h1>
+      <p class="text-sm text-gray-500">Select a supplier to browse their current inventory and place an order.</p>
+    </div>
+
+    <!-- Trust badges -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+      <div class="bg-white rounded-lg border border-gray-100 p-3 flex items-center gap-3">
+        <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <div><p class="text-xs font-semibold">Quality Checked</p><p class="text-xs text-gray-400">Thoroughly graded</p></div>
+      </div>
+      <div class="bg-white rounded-lg border border-gray-100 p-3 flex items-center gap-3">
+        <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        <div><p class="text-xs font-semibold">Buyer Protection</p><p class="text-xs text-gray-400">eBay guaranteed</p></div>
+      </div>
+      <div class="bg-white rounded-lg border border-gray-100 p-3 flex items-center gap-3">
+        <svg class="w-5 h-5 text-indigo-500 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+        <div><p class="text-xs font-semibold">Air &amp; Sea Shipping</p><p class="text-xs text-gray-400">2-3 or 6-8 weeks</p></div>
+      </div>
+      <div class="bg-white rounded-lg border border-gray-100 p-3 flex items-center gap-3">
+        <svg class="w-5 h-5 text-orange-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"/></svg>
+        <div><p class="text-xs font-semibold">Dedicated Support</p><p class="text-xs text-gray-400">Fleek team on call</p></div>
+      </div>
+    </div>
+
+    <!-- Supplier cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+
+      <div class="supplier-card p-6" onclick="openSeller('thrift-kings')">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <h2 class="text-lg font-bold text-gray-900 mb-1">Premium Vintage Apparel Collection</h2>
+            <p class="text-sm text-gray-500">Supplier: <span class="font-semibold text-gray-800">thrift-kings</span></p>
+          </div>
+          <span class="flex items-center gap-1 text-xs font-semibold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-100 flex-shrink-0 ml-3">
+            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            4.7 · 111 buyers
+          </span>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-4 mb-4">
+          <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">Order Requirements</p>
+          <div class="grid grid-cols-2 gap-3">
+            <div><p class="text-xs text-gray-500 mb-0.5">Min Order (Air)</p><p class="text-sm font-bold text-gray-900">£100</p></div>
+            <div><p class="text-xs text-gray-500 mb-0.5">Min Order (Sea)</p><p class="text-sm font-bold text-gray-900">£500</p></div>
+            <div class="col-span-2 flex gap-4 pt-1 border-t border-gray-200">
+              <span class="text-xs text-gray-600">Spend £2,000+ <span class="font-semibold text-green-600">2% off</span></span>
+              <span class="text-xs text-gray-600">Spend £4,000+ <span class="font-semibold text-green-600">5% off</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <p class="text-xs text-gray-400">Closing: 31 Mar 2026</p>
+          <span class="text-sm font-semibold text-gray-900 flex items-center gap-1">View Inventory <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></span>
+        </div>
+      </div>
+
+      <div class="supplier-card p-6" onclick="openSeller('jan-vintage')">
+        <div class="flex items-start justify-between mb-4">
+          <div>
+            <h2 class="text-lg font-bold text-gray-900 mb-1">Winter StockUp Collection by Wings999</h2>
+            <p class="text-sm text-gray-500">Supplier: <span class="font-semibold text-gray-800">jan-vintage</span></p>
+          </div>
+          <span class="flex items-center gap-1 text-xs font-semibold text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-100 flex-shrink-0 ml-3">
+            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+            4.8 · 146 buyers
+          </span>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-4 mb-4">
+          <p class="text-xs font-semibold uppercase tracking-wider text-gray-400 mb-3">Order Requirements</p>
+          <div class="grid grid-cols-2 gap-3">
+            <div><p class="text-xs text-gray-500 mb-0.5">Min Order (Air)</p><p class="text-sm font-bold text-gray-900">£200</p></div>
+            <div><p class="text-xs text-gray-500 mb-0.5">Min Order (Sea)</p><p class="text-sm font-bold text-gray-900">£800</p></div>
+            <div class="col-span-2 flex gap-4 pt-1 border-t border-gray-200">
+              <span class="text-xs text-gray-600">Spend £1,500+ <span class="font-semibold text-green-600">2% off</span></span>
+              <span class="text-xs text-gray-600">Spend £2,500+ <span class="font-semibold text-green-600">5% off</span></span>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center justify-between">
+          <p class="text-xs text-gray-400">Closing: 31 Mar 2026</p>
+          <span class="text-sm font-semibold text-gray-900 flex items-center gap-1">View Inventory <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg></span>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>
-<div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
-<div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm ch cursor-pointer" onclick="openSeller('thrift-kings')">
-<h2 class="text-xl font-black text-gray-900">Premium Vintage Apparel Collection</h2>
-<p class="text-sm text-gray-500 mt-1">🏪 Supplier: <span class="font-semibold text-gray-800">thrift-kings</span></p>
-<p class="text-sm text-gray-600 mt-1">⭐ 4.7 rating 👥 111 repeat buyers</p>
-<div class="mt-4 bg-gray-50 rounded-xl p-4 text-sm">
-<p class="font-bold text-gray-500 uppercase text-xs tracking-wider mb-2">Order Requirements</p>
-<div class="grid grid-cols-2 gap-2">
-<div><p class="text-xs text-gray-500">Min Order (Air)</p><p class="font-black text-gray-900">£100</p></div>
-<div><p class="text-xs text-gray-500">Min Order (Sea)</p><p class="font-black text-gray-900">£500</p></div>
-<div><p class="text-xs text-gray-700">Spend £2,000+ <span class="text-green-600 font-bold">2% off</span></p></div>
-<div><p class="text-xs text-gray-700">Spend £4,000+ <span class="text-green-600 font-bold">5% off</span></p></div>
-</div>
-</div>
-<p class="text-xs text-gray-500 mt-3">⌛ Closing: 31/03/2026</p>
-<div class="mt-4 w-full bg-gray-900 text-white text-center py-3 rounded-xl font-bold text-sm">View Inventory →</div>
-</div>
-<div class="bg-white rounded-2xl border border-gray-200 p-6 shadow-sm ch cursor-pointer" onclick="openSeller('jan-vintage')">
-<h2 class="text-xl font-black text-gray-900">Winter StockUp Collection by Wings999</h2>
-<p class="text-sm text-gray-500 mt-1">🏪 Supplier: <span class="font-semibold text-gray-800">jan-vintage</span></p>
-<p class="text-sm text-gray-600 mt-1">⭐ 4.8 rating 👥 146 repeat buyers</p>
-<div class="mt-4 bg-gray-50 rounded-xl p-4 text-sm">
-<p class="font-bold text-gray-500 uppercase text-xs tracking-wider mb-2">Order Requirements</p>
-<div class="grid grid-cols-2 gap-2">
-<div><p class="text-xs text-gray-500">Min Order (Air)</p><p class="font-black text-gray-900">£200</p></div>
-<div><p class="text-xs text-gray-500">Min Order (Sea)</p><p class="font-black text-gray-900">£800</p></div>
-<div><p class="text-xs text-gray-700">Spend £1,500+ <span class="text-green-600 font-bold">2% off</span></p></div>
-<div><p class="text-xs text-gray-700">Spend £2,500+ <span class="text-green-600 font-bold">5% off</span></p></div>
-</div>
-</div>
-<p class="text-xs text-gray-500 mt-3">⌛ Closing: 31/03/2026</p>
-<div class="mt-4 w-full bg-gray-900 text-white text-center py-3 rounded-xl font-bold text-sm">View Inventory →</div>
-</div>
-</div>
-</div>
-</div>
+<!-- INVENTORY PAGE -->
 <div id="pg-inv" class="pg-inv">
-<div class="bg-white shadow-sm border-b border-gray-200 sticky" style="top:0;z-index:40">
-<div class="max-w-7xl mx-auto px-4 py-2 flex items-center justify-between">
-<div class="flex items-center gap-3">
-<button onclick="goBack()" class="text-sm text-blue-600 font-semibold hover:underline">← All Stock Lists</button>
-<span class="text-xs text-gray-400">|</span>
-<span id="inv-supp" class="text-sm font-bold text-gray-900"></span>
+  <div class="bg-white border-b border-gray-200 sticky z-40" style="top:0">
+    <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <button onclick="goBack()" class="text-sm font-semibold text-blue-600 hover:text-blue-800 flex items-center gap-1">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          All Stock Lists
+        </button>
+        <span class="text-gray-200 text-sm">|</span>
+        <span id="inv-supp" class="text-sm font-semibold text-gray-800"></span>
+      </div>
+      <button onclick="scrollToOrder()" class="bg-gray-900 hover:bg-gray-700 text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">Place Order</button>
+    </div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+    <div class="mb-5">
+      <p class="text-xs font-bold uppercase tracking-widest text-blue-600 mb-2">Exclusive Partnership</p>
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <div>
+          <h1 id="inv-coll-h" class="text-2xl font-extrabold text-gray-900"></h1>
+          <p id="inv-rating" class="text-sm text-gray-500 mt-0.5"></p>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <span class="text-xs bg-green-50 text-green-700 font-semibold px-3 py-1 rounded-full border border-green-200">Grade A/B Stock</span>
+          <span class="text-xs bg-amber-50 text-amber-700 font-semibold px-3 py-1 rounded-full border border-amber-200">Order by Mar 31</span>
+        </div>
+      </div>
+      <p id="inv-min" class="text-xs text-gray-500 mt-2"></p>
+    </div>
+
+    <div class="flex flex-col lg:flex-row gap-6">
+      <!-- Left: products -->
+      <div class="flex-1 min-w-0">
+        <!-- Shipping selector -->
+        <div class="bg-white rounded-xl border border-gray-200 p-4 mb-4">
+          <h3 class="text-sm font-bold text-gray-800 mb-3">Shipping Information</h3>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1.5">Where are you based?</label>
+              <select id="loc" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white" onchange="updDlv()">
+                <option value="">Select location...</option>
+                <option value="UK">United Kingdom</option>
+                <option value="US">United States</option>
+                <option value="EU1">Europe (Zone 1)</option>
+                <option value="EU2">Europe (Zone 2)</option>
+                <option value="ROW">Rest of World</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1.5">Shipping Method</label>
+              <div class="flex gap-2">
+                <button id="btn-air" class="sb sel" onclick="selShip('air')">Air (2-3 wks)</button>
+                <button id="btn-sea" class="sb" onclick="selShip('sea')">Sea (6-8 wks)</button>
+              </div>
+            </div>
+          </div>
+          <div id="dlv-b" class="hidden mt-3 bg-blue-50 border border-blue-100 rounded-lg px-4 py-2 text-sm text-blue-700 font-medium">
+            <span id="dlv-t"></span>
+          </div>
+          <div id="sea-b" class="hidden mt-2 text-xs text-gray-500 bg-gray-50 rounded-lg px-3 py-2">
+            Sea shipping is more cost-effective for larger orders. Minimum order for sea: £<span id="sea-min">500</span>
+          </div>
+        </div>
+
+        <!-- Search + filters -->
+        <div class="flex flex-col sm:flex-row gap-3 mb-4">
+          <div class="flex-1 relative">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            <input type="text" id="srch" placeholder="Search products..." class="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 bg-white" oninput="render(AF)">
+          </div>
+          <div class="flex gap-2">
+            <button onclick="filt('all')" id="f-all" class="filter-btn active">All</button>
+            <button onclick="filt('P')" id="f-Premium" class="filter-btn">Premium</button>
+            <button onclick="filt('S')" id="f-Staple" class="filter-btn">Staple</button>
+          </div>
+        </div>
+
+        <!-- Grade key -->
+        <p class="text-xs text-gray-400 mb-4">Grade A: Excellent condition. Grade A/B: 70% perfect, 30% light wear. Grade A/B/C: 30% perfect, 40% light wear, 30% repairable.</p>
+
+        <!-- Premium section -->
+        <div id="sec-P" class="mb-6">
+          <div class="flex items-center gap-3 mb-3 pb-2 border-b border-gray-200">
+            <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-amber-100 text-amber-800">Premium</span>
+            <span class="text-xs text-gray-400">Designer &amp; high-value pieces</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3" id="prods-P"></div>
+        </div>
+
+        <!-- Staple section -->
+        <div id="sec-S" class="mb-6">
+          <div class="flex items-center gap-3 mb-3 pb-2 border-b border-gray-200">
+            <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-blue-100 text-blue-800">Staple</span>
+            <span class="text-xs text-gray-400">High-volume everyday pieces</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3" id="prods-S"></div>
+        </div>
+      </div>
+
+      <!-- Right: order summary -->
+      <div class="lg:w-72 xl:w-80">
+        <div id="order-summary-box" class="bg-white rounded-xl border border-gray-200" style="position:sticky;top:3.5rem">
+          <div class="p-4 border-b border-gray-100">
+            <h2 class="text-sm font-bold text-gray-900">Order Summary</h2>
+          </div>
+          <div class="p-4 space-y-2.5 text-sm">
+            <div class="flex justify-between"><span class="text-gray-500">Total Items</span><span id="tot-i" class="font-semibold">0</span></div>
+            <div class="flex justify-between"><span class="text-gray-500">Staple Items</span><span id="tot-s" class="font-semibold">0</span></div>
+            <div class="flex justify-between"><span class="text-gray-500">Subtotal</span><span id="subtot" class="font-semibold">£0.00</span></div>
+            <div id="disc-r" class="hidden flex justify-between text-green-600"><span>Bulk Discount</span><span id="disc-a" class="font-semibold"></span></div>
+            <div class="border-t border-gray-100 pt-2.5 flex justify-between items-baseline"><span class="font-bold text-gray-900">Total</span><span id="tot-p" class="text-xl font-extrabold text-gray-900">£0.00</span></div>
+          </div>
+          <div class="px-4 pb-3 space-y-2">
+            <div id="req-m" class="text-xs px-3 py-2 rounded-lg bg-amber-50 text-amber-700 font-medium border border-amber-100"></div>
+            <div id="req-s" class="text-xs px-3 py-2 rounded-lg bg-amber-50 text-amber-700 font-medium border border-amber-100"></div>
+          </div>
+          <div class="p-4 border-t border-gray-100 space-y-3">
+            <div>
+              <label class="block text-xs font-medium text-gray-600 mb-1.5">Email Address <span class="text-red-500">*</span></label>
+              <input type="email" id="oemail" placeholder="your@email.com" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-900">
+              <p class="text-xs text-gray-400 mt-1">Required for order confirmation</p>
+            </div>
+            <button onclick="submitOrder()" class="w-full py-3 rounded-xl font-bold text-white text-sm bg-gray-900 hover:bg-gray-700 transition-colors">Place Order via eBay</button>
+            <p class="text-center text-xs text-gray-400">Secured by eBay Buyer Protection</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
-<button onclick="scrollToOrder()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-full">Place Order →</button>
-</div>
-</div>
-<div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
-<div class="mb-2"><span class="text-xs font-bold uppercase tracking-widest text-blue-600 bg-blue-50 px-2 py-0.5 rounded">Exclusive Partnership</span></div>
-<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
-<div>
-<h1 id="inv-coll-h" class="text-2xl font-black text-gray-900"></h1>
-<p id="inv-rating" class="text-sm text-gray-500 mt-0.5"></p>
-</div>
-<div class="flex gap-2 flex-wrap">
-<span class="text-xs bg-green-50 text-green-700 font-semibold px-3 py-1 rounded-full border border-green-200">✓ Grade A/B Stock</span>
-<span class="text-xs bg-amber-50 text-amber-700 font-semibold px-3 py-1 rounded-full border border-amber-200">⌛ Order by Mar 31</span>
-</div>
-</div>
-<p id="inv-min" class="text-xs text-gray-500 mb-4"></p>
-<div class="flex flex-col lg:flex-row gap-6">
-<div class="flex-1">
-<div class="bg-white rounded-xl border border-gray-200 p-4 mb-4 shadow-sm">
-<h2 class="font-bold text-gray-800 mb-3">📍 Shipping Information</h2>
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-<div>
-<label class="block text-xs font-medium text-gray-600 mb-1">Where are you based?</label>
-<select id="loc" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" onchange="updDlv()">
-<option value="">Select your location...</option>
-<option value="UK">🇬🇧 United Kingdom</option>
-<option value="US">🇺🇸 United States</option>
-<option value="EU1">🇪🇺 Europe (Zone 1)</option>
-<option value="EU2">🇪🇺 Europe (Zone 2)</option>
-<option value="ROW">🌍 Rest of World</option>
-</select>
-</div>
-<div>
-<label class="block text-xs font-medium text-gray-600 mb-1">Shipping Method</label>
-<div class="flex gap-2">
-<button id="btn-air" class="sb sel" onclick="selShip('air')">✈️ Air (2-3 wks)</button>
-<button id="btn-sea" class="sb" onclick="selShip('sea')">🚢 Sea (6-8 wks)</button>
-</div>
-</div>
-</div>
-<div id="dlv-b" class="hidden mt-3 bg-blue-50 border border-blue-200 rounded-lg px-4 py-2 text-sm text-blue-700 font-medium">
-⌛ <span id="dlv-t">TBC</span>
-</div>
-<div id="sea-b" class="hidden mt-2 text-xs text-gray-500 bg-gray-50 rounded-lg px-3 py-2">
-🚢 Sea shipping is more cost-effective for larger orders. Min. order for sea: £<span id="sea-min">500</span>
-</div>
-</div>
-<div class="flex items-center gap-3 mb-4">
-<div class="flex-1 relative">
-<span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">🔍</span>
-<input type="text" id="srch" placeholder="Search products..." class="w-full pl-9 pr-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white" oninput="render(AF)">
-</div>
-<div class="flex gap-2">
-<button onclick="filt('all')" id="f-all" class="px-3 py-2 text-xs font-semibold rounded-lg bg-blue-600 text-white">All</button>
-<button onclick="filt('P')" id="f-Premium" class="px-3 py-2 text-xs font-semibold rounded-lg bg-gray-100 text-gray-700">Premium</button>
-<button onclick="filt('S')" id="f-Staple" class="px-3 py-2 text-xs font-semibold rounded-lg bg-gray-100 text-gray-700">Staple</button>
-</div>
-</div>
-<div id="sec-P" class="mb-6">
-<div class="flex items-center gap-3 mb-3 py-2 border-b border-gray-200">
-<span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider" style="background:linear-gradient(135deg,#f5c842,#e8a500);color:#1a1a1a">⭐ PREMIUM</span>
-<span class="text-xs text-gray-500">Designer &amp; high-value pieces</span>
-</div>
-<div class="text-xs text-gray-400 mb-2">ℹ Grade Definitions: Grade A: Excellent. Grade A/B: 70% perfect, 30% light wear. Grade ABC: 30% perfect, 40% light wear, 30% repairable.</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3" id="prods-P"></div>
-</div>
-<div id="sec-S" class="mb-6">
-<div class="flex items-center gap-3 mb-3 py-2 border-b border-gray-200">
-<span class="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider" style="background:#f0f4ff;color:#3b5bdb;border:1px solid #c5d0fa">📦 STAPLE</span>
-<span class="text-xs text-gray-500">High-volume everyday pieces</span>
-</div>
-<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3" id="prods-S"></div>
-</div>
-</div>
-<div class="lg:w-80 xl:w-96">
-<div id="order-summary-box" class="bg-white rounded-xl border border-gray-200 shadow-sm" style="position:sticky;top:3.5rem">
-<div class="p-4 border-b border-gray-100"><h2 class="font-bold text-gray-800">🛒 Order Summary</h2></div>
-<div class="p-4 space-y-3">
-<div class="flex justify-between text-sm"><span class="text-gray-600">Total Items</span><span id="tot-i" class="font-semibold">0</span></div>
-<div class="flex justify-between text-sm"><span class="text-gray-600">Staple Items</span><span id="tot-s" class="font-semibold">0</span></div>
-<div class="flex justify-between text-sm"><span class="text-gray-600">Subtotal</span><span id="subtot" class="font-semibold">£0.00</span></div>
-<div id="disc-r" class="hidden flex justify-between text-sm text-green-600"><span>Bulk Discount</span><span id="disc-a" class="font-semibold"></span></div>
-<div class="border-t border-gray-100 pt-3 flex justify-between"><span class="font-bold text-gray-800">Total</span><span id="tot-p" class="font-black text-xl text-blue-600">£0.00</span></div>
-</div>
-<div class="px-4 pb-3 space-y-2">
-<div id="req-m" class="text-xs px-3 py-2 rounded-lg bg-amber-50 text-amber-600 font-medium">⚠ Minimum order: £100 (Air)</div>
-<div id="req-s" class="text-xs px-3 py-2 rounded-lg bg-amber-50 text-amber-600 font-medium">⚠ Minimum 30% staple items</div>
-</div>
-<div class="p-4 border-t border-gray-100 space-y-3">
-<div>
-<label class="block text-xs font-medium text-gray-600 mb-1">Email Address <span class="text-red-500">*</span></label>
-<input type="email" id="oemail" placeholder="your@email.com" class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
-<p class="text-xs text-gray-400 mt-1">Required for order confirmation</p>
-</div>
-<button onclick="submitOrder()" class="w-full py-3 rounded-xl font-bold text-white text-sm bg-blue-600 hover:bg-blue-700">🛍️ Place Order via eBay</button>
-<p class="text-center text-xs text-gray-400">Secured by eBay Buyer Protection</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="bg-white border-t border-gray-200 py-5 mt-8">
-<div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-<div class="flex items-center gap-2"><span>⭐</span><span class="font-black text-gray-800">FLEEK</span><span class="text-gray-300">×</span><span class="font-black text-lg"><span style="color:#e53238">e</span><span style="color:#0064d2">B</span><span style="color:#f5af02">a</span><span style="color:#86b817">y</span></span></div>
-<p class="text-xs text-gray-400">© 2026 Fleek × eBay Partnership</p>
-<div class="flex gap-4 text-xs"><a href="https://joinfleek.com" target="_blank" class="text-gray-400 hover:text-blue-600">joinfleek.com</a><a href="https://ebay.com" target="_blank" class="text-gray-400 hover:text-blue-600">ebay.com</a></div>
-</div>
-</div>
+
+<!-- Footer -->
+<footer class="bg-white border-t border-gray-100 py-6 mt-4">
+  <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="flex items-center gap-3">
+      <img src="https://www.joinfleek.com/_next/static/media/Logo.6ba37d95.webp" alt="Fleek" class="h-6 w-auto">
+      <span class="text-gray-300">×</span>
+      <span class="font-black text-lg"><span style="color:#e53238">e</span><span style="color:#0064d2">B</span><span style="color:#f5af02">a</span><span style="color:#86b817">y</span></span>
+    </div>
+    <p class="text-xs text-gray-400">© 2026 Fleek × eBay Partnership</p>
+    <div class="flex gap-4 text-xs">
+      <a href="https://joinfleek.com" target="_blank" class="text-gray-400 hover:text-blue-600">joinfleek.com</a>
+      <a href="https://ebay.com" target="_blank" class="text-gray-400 hover:text-blue-600">ebay.com</a>
+    </div>
+  </div>
+</footer>
 <script>
 (function(){var a=sessionStorage.getItem('fleek_auth');if(!a){window.location.href='index.html';return;}})();
-const sellers={'thrift-kings':{name:'thrift-kings',coll:'Premium Vintage Apparel Collection',rat:'4.7',buy:'111',mA:100,mS:500,d1:2000,p1:.02,d2:4000,p2:.05,smp:30},'jan-vintage':{name:'jan-vintage',coll:'Winter StockUp Collection by Wings999',rat:'4.8',buy:'146',mA:200,mS:800,d1:1500,p1:.02,d2:2500,p2:.05,smp:30}};
-const AP={'thrift-kings':[{id:1,n:"Adidas Trackpants",d:"Adidas Only - Mostly 3 Striped Pieces",g:"A/B",q:195,p:8.06,t:"P",c:"Pts"},{id:2,n:"Branded Carpenter Shorts",d:"Wrangler, Lee, Levis and Tommy",g:"A/B",q:200,p:6.98,t:"P",c:"Sh"},{id:3,n:"Carhartt Dickies Shirts",d:"Mix Styles - May Include Shackets",g:"A",q:200,p:9.65,t:"P",c:"Ot"},{id:4,n:"Carhartt Mix Jackets",d:"70% Workwear / 30% Non Workwear",g:"ABC",q:300,p:32.28,t:"P",c:"Jk"},{id:5,n:"Carhartt Workwear Jackets",d:"100% Workwear",g:"A/B",q:198,p:47.28,t:"P",c:"Jk"},{id:6,n:"Coogi Style Sweaters",d:"Vibrant patterned knitwear",g:"A/B",q:98,p:17.14,t:"P",c:"Sw"},{id:7,n:"Designer Shirts",d:"YSL, Burberry, Christian Dior, Harley Davidson",g:"A",q:165,p:10.81,t:"P",c:"Ot"},{id:8,n:"Harley T-Shirts",d:"Classic Harley Davidson tees",g:"A/B",q:200,p:9.49,t:"P",c:"Ot"},{id:9,n:"Harley Y2K Tops",d:"Women Only",g:"A/B",q:300,p:7.49,t:"P",c:"Ot"},{id:10,n:"LLW Denim Jackets",d:"Standard Mix - Denim, Corduroy, Sherpa",g:"A/B",q:300,p:10.79,t:"P",c:"Jk"},{id:11,n:"Nike/Adidas Sweatshirts",d:"Only Nike and Adidas Sweatshirts and Hoodies",g:"A/B",q:200,p:7.14,t:"P",c:"Sw"},{id:12,n:"Nike Trackpants",d:"Nike Only",g:"A",q:190,p:9.06,t:"P",c:"Pts"},{id:13,n:"Patagonia Fleeces",d:"Mix Male and Female Fleeces - All Styles",g:"A",q:89,p:15.30,t:"P",c:"Sw"},{id:14,n:"Polo RL Shirts",d:"Ralph Lauren polo shirts",g:"A",q:300,p:9.49,t:"P",c:"Ot"},{id:15,n:"Starter Pro Sport Jackets",d:"Proline, NFL, Logo 7, Chalkline, Starter",g:"A/B",q:200,p:21.95,t:"P",c:"Jk"},{id:16,n:"TNF Fleece",d:"Mix Male and Female Fleeces - No Vests",g:"A",q:236,p:8.30,t:"P",c:"Sw"},{id:17,n:"True Religion/Rock Revival Jeans",d:"All Mens Jeans",g:"ABC",q:200,p:15.22,t:"P",c:"Pts"},{id:18,n:"Barbour/Belstaff Wax Jackets",d:"Standard Oil/Wax - Mens/Womens Mix",g:"A/B",q:198,p:31.79,t:"P",c:"Jk"},{id:19,n:"Burberry Jackets/Coats",d:"All Styles of Jackets",g:"A/B",q:35,p:26.95,t:"P",c:"Jk"},{id:20,n:"Christian Dior Trench Coats",d:"Single and Double Breasted Trench Coats",g:"A/B",q:49,p:51.95,t:"P",c:"Jk"},{id:21,n:"Levis 501",d:"Only Levis 501 - 90% Blue and Black",g:"A/B",q:500,p:9.22,t:"P",c:"Pts"},{id:22,n:"Levis Cut Off Shorts",d:"Cut-off Shorts - Reworked from Straight Jeans",g:"A/B",q:200,p:4.98,t:"P",c:"Sh"},{id:23,n:"Nike/Adidas/RL Puffer Jackets",d:"Premium Brands - Great Condition, Good Styles",g:"A/B",q:198,p:22.12,t:"P",c:"Jk"},{id:24,n:"North Face 700/800 Puffers",d:"700/800 and Summit Series",g:"A/B",q:199,p:37.12,t:"P",c:"Jk"},{id:25,n:"Patagonia Puffers",d:"All styles",g:"A/B",q:199,p:27.12,t:"P",c:"Jk"},{id:26,n:"Ralph Lauren Sweaters",d:"Mix of All Types of Ralph Lauren Sweaters",g:"A/B",q:300,p:14.06,t:"P",c:"Sw"},{id:27,n:"RL/Lacoste Polo T-Shirts",d:"Ralph Lauren and Lacoste polo tees",g:"A",q:200,p:6.65,t:"P",c:"Ot"},{id:28,n:"Soccer/Pro Sport Jerseys",d:"Mix of team jerseys",g:"A/B",q:150,p:10.49,t:"P",c:"Ot"},{id:29,n:"Blank/Plain Sweatshirts",d:"Clean basics",g:"A/B",q:200,p:4.14,t:"S",c:"Sw"},{id:30,n:"Branded Denim Jackets",d:"Tommy, Ralph, CK, Hard Rock, Diesel, Armani",g:"A",q:283,p:6.79,t:"S",c:"Jk"},{id:31,n:"Branded Denim Shirts",d:"Mixed branded denim shirts",g:"A/B",q:200,p:6.15,t:"S",c:"Ot"},{id:32,n:"Branded Fleeces",d:"Includes All Brands - Vintage and Modern",g:"A",q:297,p:7.22,t:"S",c:"Sw"},{id:33,n:"Branded Heavy Jackets (Nylon)",d:"Adidas, Nike, Puma, Helly Hansen, Umbro",g:"A",q:100,p:12.12,t:"S",c:"Jk"},{id:34,n:"Branded Puffers",d:"Mixed branded puffer jackets",g:"A/B",q:200,p:18.12,t:"S",c:"Jk"},{id:35,n:"Branded Sweatshirts",d:"Nike, Adidas, Reebok, Ralph Lauren, Tommy, Umbro",g:"A/B",q:300,p:7.06,t:"S",c:"Sw"},{id:36,n:"Chaps Sweaters",d:"Classic Chaps knitwear",g:"A",q:200,p:4.14,t:"S",c:"Sw"},{id:37,n:"Columbia Fleeces",d:"All Styles - 80% Males",g:"A",q:147,p:7.30,t:"S",c:"Sw"},{id:38,n:"Crazy/Colorful Nylon Jackets",d:"Heavy/Light Mix - Stylish Colour Mixes",g:"A",q:490,p:5.63,t:"S",c:"Jk"},{id:39,n:"Crazy Fleeces",d:"Mostly Round Neck or Zipper - No V-Necks",g:"A",q:294,p:6.30,t:"S",c:"Sw"},{id:40,n:"Dickies Cotton Shorts",d:"Standard Dickies Cotton Shorts",g:"A/B",q:200,p:3.98,t:"S",c:"Sh"},{id:41,n:"Flannel Shirts",d:"Mix of Branded and Unbranded - 30/70 Ratio",g:"A/B",q:196,p:2.49,t:"S",c:"Ot"},{id:42,n:"Graphic Sweatshirts",d:"Animal, Location, Racing, Funky Graphics",g:"A/B",q:300,p:6.06,t:"S",c:"Sw"},{id:43,n:"LLW Denim Shirts",d:"Mix of denim shirts",g:"A/B",q:400,p:6.49,t:"S",c:"Ot"},{id:44,n:"Mix Branded Shirts",d:"Mixed branded shirts",g:"A",q:400,p:4.65,t:"S",c:"Ot"},{id:45,n:"Pro Sport/College Sweatshirts",d:"College / Team / Pro Sport",g:"A/B",q:300,p:8.06,t:"S",c:"Sw"},{id:46,n:"Pro Sport T-Shirts",d:"Mixed pro sport tees",g:"A",q:200,p:4.49,t:"S",c:"Ot"},{id:47,n:"Rugby T-Shirts",d:"Branded and Unbranded Rugby Shirts - Women Only",g:"A",q:489,p:5.57,t:"S",c:"Ot"},{id:48,n:"Tommy Hilfiger Sweaters",d:"Classic Tommy knitwear",g:"A",q:151,p:6.98,t:"S",c:"Sw"},{id:49,n:"Afghan Coats/Jackets",d:"Mix of Long and Mid Style Afghan Coats",g:"A/B",q:189,p:14.28,t:"S",c:"Jk"},{id:50,n:"Barbour/Belstaff Quilt Jackets",d:"Standard Quilt Jackets",g:"A",q:98,p:14.12,t:"S",c:"Jk"},{id:51,n:"Branded Chunky Corduroy Pants",d:"Chunky Corduroy - No Modern Corduroy",g:"A",q:300,p:4.14,t:"S",c:"Pts"},{id:52,n:"Branded Ladies Knitwear",d:"Ladies branded knitwear",g:"A/B",q:198,p:4.06,t:"S",c:"Sw"},{id:53,n:"Branded T-Shirts",d:"Mix of Branded T-Shirts - S-XL, All Brands",g:"A",q:300,p:3.91,t:"S",c:"Ot"},{id:54,n:"Cotton Shorts",d:"Branded Cotton Shorts - Polo, Tommy, Fred Perry",g:"A/B",q:200,p:2.81,t:"S",c:"Sh"},{id:55,n:"Dickies Cotton Pants",d:"Dickies Skater Pants - 70% Original 874 Styles",g:"A",q:266,p:6.14,t:"S",c:"Pts"},{id:56,n:"Hawaii/Rayon/Bowling Shirts",d:"Vintage Hawaiian and bowling shirts",g:"A",q:200,p:4.49,t:"S",c:"Ot"},{id:57,n:"Mix Branded Polo T-Shirts",d:"Mixed branded polo tees",g:"A",q:198,p:3.57,t:"S",c:"Ot"},{id:58,n:"Mix Branded Sweaters",d:"Mixed branded knitwear",g:"A",q:500,p:5.14,t:"S",c:"Sw"},{id:59,n:"North Face Puffers",d:"Classic North Face puffer range",g:"A/B",q:197,p:27.12,t:"S",c:"Jk"},{id:60,n:"Single Stitch T-Shirts",d:"Vintage single stitch tees",g:"A/B",q:200,p:4.41,t:"S",c:"Ot"},{id:61,n:"Y2K Flared Pants (Womens)",d:"Y2K Styles - Low Rises, Rhinestones",g:"A",q:273,p:8.14,t:"S",c:"Pts"},{id:62,n:"Y2K Skirts",d:"Skirts - Embellishments or Y2K Details",g:"A/B",q:150,p:4.65,t:"S",c:"Ot"}],
-'jan-vintage':[{id:101,n:"Burberry Trench Coat",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:99,p:42,t:"P",c:"Jk"},{id:102,n:"Carhartt Dickies Dungaree",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:495,p:18,t:"P",c:"Pts"},{id:103,n:"Carhartt Jacket",d:"Mostly regular sizes, up to 10% XS/XXL",g:"ABC",q:297,p:28,t:"P",c:"Jk"},{id:104,n:"Carhartt/Dickies Shorts",d:"Mostly regular sizes, up to 10% XS/XXL",g:"ABC",q:483,p:8.5,t:"P",c:"Sh"},{id:105,n:"Harley T-Shirt",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:800,p:9,t:"P",c:"Ot"},{id:106,n:"Hip Hop Pant",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:400,p:12,t:"P",c:"Pts"},{id:107,n:"Hip Hop Shorts",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:400,p:8,t:"P",c:"Sh"},{id:108,n:"Lacoste Sweater",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:53,p:14,t:"P",c:"Sw"},{id:109,n:"Levis 501",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:357,p:9.5,t:"P",c:"Pts"},{id:110,n:"Northface Denali",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:433,p:22,t:"P",c:"Jk"},{id:111,n:"Polo Halfzip Sweater",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:287,p:11,t:"P",c:"Sw"},{id:112,n:"Polo Round Neck Sweater",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:468,p:9,t:"P",c:"Sw"},{id:113,n:"Polo Round Neck T-Shirt",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:790,p:6,t:"P",c:"Ot"},{id:114,n:"Premium Branded Jackets",d:"Canada Goose, Arcteryx, Moncler",g:"AB",q:100,p:75,t:"P",c:"Jk"},{id:115,n:"Pro Sport NFL/NHL/NBA Heavy Jackets",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:241,p:22,t:"P",c:"Jk"},{id:116,n:"Ralph Lauren Button Down Shirts",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:1000,p:8,t:"P",c:"Ot"},{id:117,n:"Ralph Lauren Polo Shirts",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:2000,p:7,t:"P",c:"Ot"},{id:118,n:"RL Sweatshirt",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:148,p:10,t:"P",c:"Sw"},{id:119,n:"Vintage Branded Shell Jackets",d:"Nike, Adidas, Puma, Reebok",g:"AB",q:230,p:15,t:"P",c:"Jk"},{id:120,n:"Barbour Wax Jacket",d:"Mostly regular sizes, up to 10% XS/XXL",g:"ABC",q:200,p:30,t:"P",c:"Jk"},{id:121,n:"Ralph Lauren Rugby Shirt",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:300,p:9,t:"P",c:"Ot"},{id:122,n:"Brand Shell/Track Jacket",d:"Nike, Adidas, Puma, Reebok",g:"AB",q:445,p:12,t:"S",c:"Jk"},{id:123,n:"Branded Rugby Shirts",d:"RL, TH, Chaps, Nautica",g:"AB",q:491,p:7.5,t:"S",c:"Ot"},{id:124,n:"Branded Sweatshirt",d:"Nike, Adidas, Champion",g:"AB",q:745,p:7,t:"S",c:"Sw"},{id:125,n:"Carhartt/Dickies Pant",d:"Mostly regular sizes, up to 10% XS/XXL",g:"ABC",q:986,p:6.5,t:"S",c:"Pts"},{id:126,n:"Coogi Style Jumper",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:250,p:12,t:"S",c:"Sw"},{id:127,n:"Flannel Shirts",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:2000,p:4,t:"S",c:"Ot"},{id:128,n:"Graphic T-Shirt",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:1000,p:4.5,t:"S",c:"Ot"},{id:129,n:"Levis Men Shorts",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:498,p:5,t:"S",c:"Sh"},{id:130,n:"LLW Jacket",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:500,p:8,t:"S",c:"Jk"},{id:131,n:"Mix Levis Jeans Men",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:1337,p:7,t:"S",c:"Pts"},{id:132,n:"Northface Fleece and Jacket Mix",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:154,p:18,t:"S",c:"Jk"},{id:133,n:"Polo V Neck Sweater",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:489,p:8,t:"S",c:"Sw"},{id:134,n:"Single Stitch Tee Shirt",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:1000,p:4,t:"S",c:"Ot"},{id:135,n:"Tommy Halfzip Sweater",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:449,p:9,t:"S",c:"Sw"},{id:136,n:"Baseball Varsity Jacket",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:400,p:14,t:"S",c:"Jk"},{id:137,n:"Branded Denim Jorts",d:"LLW Primarily",g:"AB",q:1000,p:5,t:"S",c:"Sh"},{id:138,n:"Nylon Varsity Jacket",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:199,p:13,t:"S",c:"Jk"},{id:139,n:"Pro/Starter NHL NFL Jacket",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:231,p:18,t:"S",c:"Jk"},{id:140,n:"Unbranded Denim Jacket Men",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:1000,p:5,t:"S",c:"Jk"},{id:141,n:"Unbranded Dungaree",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:500,p:4.5,t:"S",c:"Pts"},{id:142,n:"Unbranded Workwear Jacket",d:"Mostly regular sizes, up to 10% XS/XXL",g:"ABC",q:295,p:6,t:"S",c:"Jk"}]};
+
+const sellers = {
+  'thrift-kings': {name:'thrift-kings',coll:'Premium Vintage Apparel Collection',rat:'4.7',buy:'111',mA:100,mS:500,d1:2000,p1:.02,d2:4000,p2:.05,smp:30},
+  'jan-vintage':  {name:'jan-vintage', coll:'Winter StockUp Collection by Wings999',rat:'4.8',buy:'146',mA:200,mS:800,d1:1500,p1:.02,d2:2500,p2:.05,smp:30}
+};
+
+const AP = {
+  'thrift-kings': [
+    {id:1,n:"Adidas Trackpants",d:"Adidas Only - Mostly 3 Striped Pieces",g:"A/B",q:195,p:8.06,t:"P"},
+    {id:2,n:"Branded Carpenter Shorts",d:"Wrangler, Lee, Levis and Tommy",g:"A/B",q:200,p:6.98,t:"P"},
+    {id:3,n:"Carhartt Dickies Shirts",d:"Mix Styles - May Include Shackets",g:"A",q:200,p:9.65,t:"P"},
+    {id:4,n:"Carhartt Mix Jackets",d:"70% Workwear / 30% Non Workwear",g:"ABC",q:300,p:32.28,t:"P"},
+    {id:5,n:"Carhartt Workwear Jackets",d:"100% Workwear",g:"A/B",q:198,p:47.28,t:"P"},
+    {id:6,n:"Coogi Style Sweaters",d:"Vibrant patterned knitwear",g:"A/B",q:98,p:17.14,t:"P"},
+    {id:7,n:"Designer Shirts",d:"YSL, Burberry, Christian Dior, Harley Davidson",g:"A",q:165,p:10.81,t:"P"},
+    {id:8,n:"Harley T-Shirts",d:"Classic Harley Davidson tees",g:"A/B",q:200,p:9.49,t:"P"},
+    {id:9,n:"Harley Y2K Tops",d:"Women Only",g:"A/B",q:300,p:7.49,t:"P"},
+    {id:10,n:"LLW Denim Jackets",d:"Standard Mix - Denim, Corduroy, Sherpa",g:"A/B",q:300,p:10.79,t:"P"},
+    {id:11,n:"Nike/Adidas Sweatshirts",d:"Only Nike and Adidas Sweatshirts and Hoodies",g:"A/B",q:200,p:7.14,t:"P"},
+    {id:12,n:"Nike Trackpants",d:"Nike Only",g:"A",q:190,p:9.06,t:"P"},
+    {id:13,n:"Patagonia Fleeces",d:"Mix Male and Female Fleeces - All Styles",g:"A",q:89,p:15.30,t:"P"},
+    {id:14,n:"Polo RL Shirts",d:"Ralph Lauren polo shirts",g:"A",q:300,p:9.49,t:"P"},
+    {id:15,n:"Starter Pro Sport Jackets",d:"Proline, NFL, Logo 7, Chalkline, Starter",g:"A/B",q:200,p:21.95,t:"P"},
+    {id:16,n:"TNF Fleece",d:"Mix Male and Female Fleeces - No Vests",g:"A",q:236,p:8.30,t:"P"},
+    {id:17,n:"True Religion/Rock Revival Jeans",d:"All Mens Jeans",g:"ABC",q:200,p:15.22,t:"P"},
+    {id:18,n:"Barbour/Belstaff Wax Jackets",d:"Standard Oil/Wax - Mens/Womens Mix",g:"A/B",q:198,p:31.79,t:"P"},
+    {id:19,n:"Burberry Jackets/Coats",d:"All Styles of Jackets",g:"A/B",q:35,p:26.95,t:"P"},
+    {id:20,n:"Christian Dior Trench Coats",d:"Single and Double Breasted Trench Coats",g:"A/B",q:49,p:51.95,t:"P"},
+    {id:21,n:"Levis 501",d:"Only Levis 501 - 90% Blue and Black",g:"A/B",q:500,p:9.22,t:"P"},
+    {id:22,n:"Levis Cut Off Shorts",d:"Cut-off Shorts - Reworked from Straight Jeans",g:"A/B",q:200,p:4.98,t:"P"},
+    {id:23,n:"Nike/Adidas/RL Puffer Jackets",d:"Premium Brands - Great Condition",g:"A/B",q:198,p:22.12,t:"P"},
+    {id:24,n:"North Face 700/800 Puffers",d:"700/800 and Summit Series",g:"A/B",q:199,p:37.12,t:"P"},
+    {id:25,n:"Patagonia Puffers",d:"All styles",g:"A/B",q:199,p:27.12,t:"P"},
+    {id:26,n:"Ralph Lauren Sweaters",d:"Mix of All Types of Ralph Lauren Sweaters",g:"A/B",q:300,p:14.06,t:"P"},
+    {id:27,n:"RL/Lacoste Polo T-Shirts",d:"Ralph Lauren and Lacoste polo tees",g:"A",q:200,p:6.65,t:"P"},
+    {id:28,n:"Soccer/Pro Sport Jerseys",d:"Mix of team jerseys",g:"A/B",q:150,p:10.49,t:"P"},
+    {id:29,n:"Blank/Plain Sweatshirts",d:"Clean basics",g:"A/B",q:200,p:4.14,t:"S"},
+    {id:30,n:"Branded Denim Jackets",d:"Tommy, Ralph, CK, Hard Rock, Diesel, Armani",g:"A",q:283,p:6.79,t:"S"},
+    {id:31,n:"Branded Denim Shirts",d:"Mixed branded denim shirts",g:"A/B",q:200,p:6.15,t:"S"},
+    {id:32,n:"Branded Fleeces",d:"Includes All Brands - Vintage and Modern",g:"A",q:297,p:7.22,t:"S"},
+    {id:33,n:"Branded Heavy Jackets (Nylon)",d:"Adidas, Nike, Puma, Helly Hansen, Umbro",g:"A",q:100,p:12.12,t:"S"},
+    {id:34,n:"Branded Puffers",d:"Mixed branded puffer jackets",g:"A/B",q:200,p:18.12,t:"S"},
+    {id:35,n:"Branded Sweatshirts",d:"Nike, Adidas, Reebok, Ralph Lauren, Tommy",g:"A/B",q:300,p:7.06,t:"S"},
+    {id:36,n:"Chaps Sweaters",d:"Classic Chaps knitwear",g:"A",q:200,p:4.14,t:"S"},
+    {id:37,n:"Columbia Fleeces",d:"All Styles - 80% Males",g:"A",q:147,p:7.30,t:"S"},
+    {id:38,n:"Crazy/Colorful Nylon Jackets",d:"Heavy/Light Mix - Stylish Colour Mixes",g:"A",q:490,p:5.63,t:"S"},
+    {id:39,n:"Crazy Fleeces",d:"Mostly Round Neck or Zipper - No V-Necks",g:"A",q:294,p:6.30,t:"S"},
+    {id:40,n:"Dickies Cotton Shorts",d:"Standard Dickies Cotton Shorts",g:"A/B",q:200,p:3.98,t:"S"},
+    {id:41,n:"Flannel Shirts",d:"Mix of Branded and Unbranded - 30/70 Ratio",g:"A/B",q:196,p:2.49,t:"S"},
+    {id:42,n:"Graphic Sweatshirts",d:"Animal, Location, Racing, Funky Graphics",g:"A/B",q:300,p:6.06,t:"S"},
+    {id:43,n:"LLW Denim Shirts",d:"Mix of denim shirts",g:"A/B",q:400,p:6.49,t:"S"},
+    {id:44,n:"Mix Branded Shirts",d:"Mixed branded shirts",g:"A",q:400,p:4.65,t:"S"},
+    {id:45,n:"Pro Sport/College Sweatshirts",d:"College / Team / Pro Sport",g:"A/B",q:300,p:8.06,t:"S"},
+    {id:46,n:"Pro Sport T-Shirts",d:"Mixed pro sport tees",g:"A",q:200,p:4.49,t:"S"},
+    {id:47,n:"Rugby T-Shirts",d:"Branded and Unbranded Rugby Shirts - Women Only",g:"A",q:489,p:5.57,t:"S"},
+    {id:48,n:"Tommy Hilfiger Sweaters",d:"Classic Tommy knitwear",g:"A",q:151,p:6.98,t:"S"},
+    {id:49,n:"Afghan Coats/Jackets",d:"Mix of Long and Mid Style Afghan Coats",g:"A/B",q:189,p:14.28,t:"S"},
+    {id:50,n:"Barbour/Belstaff Quilt Jackets",d:"Standard Quilt Jackets",g:"A",q:98,p:14.12,t:"S"},
+    {id:51,n:"Branded Chunky Corduroy Pants",d:"Chunky Corduroy - No Modern Corduroy",g:"A",q:300,p:4.14,t:"S"},
+    {id:52,n:"Branded Ladies Knitwear",d:"Ladies branded knitwear",g:"A/B",q:198,p:4.06,t:"S"},
+    {id:53,n:"Branded T-Shirts",d:"Mix of Branded T-Shirts - S-XL, All Brands",g:"A",q:300,p:3.91,t:"S"},
+    {id:54,n:"Cotton Shorts",d:"Branded Cotton Shorts - Polo, Tommy, Fred Perry",g:"A/B",q:200,p:2.81,t:"S"},
+    {id:55,n:"Dickies Cotton Pants",d:"Dickies Skater Pants - 70% Original 874 Styles",g:"A",q:266,p:6.14,t:"S"},
+    {id:56,n:"Hawaii/Rayon/Bowling Shirts",d:"Vintage Hawaiian and bowling shirts",g:"A",q:200,p:4.49,t:"S"},
+    {id:57,n:"Mix Branded Polo T-Shirts",d:"Mixed branded polo tees",g:"A",q:198,p:3.57,t:"S"},
+    {id:58,n:"Mix Branded Sweaters",d:"Mixed branded knitwear",g:"A",q:500,p:5.14,t:"S"},
+    {id:59,n:"North Face Puffers",d:"Classic North Face puffer range",g:"A/B",q:197,p:27.12,t:"S"},
+    {id:60,n:"Single Stitch T-Shirts",d:"Vintage single stitch tees",g:"A/B",q:200,p:4.41,t:"S"},
+    {id:61,n:"Y2K Flared Pants (Womens)",d:"Y2K Styles - Low Rises, Rhinestones",g:"A",q:273,p:8.14,t:"S"},
+    {id:62,n:"Y2K Skirts",d:"Skirts - Embellishments or Y2K Details",g:"A/B",q:150,p:4.65,t:"S"}
+  ],
+  'jan-vintage': [
+    {id:101,n:"Burberry Trench Coat",d:"Mostly regular sizes, up to 10% XS/XXL",g:"AB",q:99,p:42,t:"P"},
+    {id:102,n:"Carhartt Dickies Dungaree",d:"Mostly regular sizes",g:"AB",q:495,p:18,t:"P"},
+    {id:103,n:"Carhartt Jacket",d:"Mostly regular sizes",g:"ABC",q:297,p:28,t:"P"},
+    {id:104,n:"Carhartt/Dickies Shorts",d:"Mostly regular sizes",g:"ABC",q:483,p:8.5,t:"P"},
+    {id:105,n:"Harley T-Shirt",d:"Mostly regular sizes",g:"AB",q:800,p:9,t:"P"},
+    {id:106,n:"Hip Hop Pant",d:"Mostly regular sizes",g:"AB",q:400,p:12,t:"P"},
+    {id:107,n:"Hip Hop Shorts",d:"Mostly regular sizes",g:"AB",q:400,p:8,t:"P"},
+    {id:108,n:"Lacoste Sweater",d:"Mostly regular sizes",g:"AB",q:53,p:14,t:"P"},
+    {id:109,n:"Levis 501",d:"Mostly regular sizes",g:"AB",q:357,p:9.5,t:"P"},
+    {id:110,n:"Northface Denali",d:"Mostly regular sizes",g:"AB",q:433,p:22,t:"P"},
+    {id:111,n:"Polo Halfzip Sweater",d:"Mostly regular sizes",g:"AB",q:287,p:11,t:"P"},
+    {id:112,n:"Polo Round Neck Sweater",d:"Mostly regular sizes",g:"AB",q:468,p:9,t:"P"},
+    {id:113,n:"Polo Round Neck T-Shirt",d:"Mostly regular sizes",g:"AB",q:790,p:6,t:"P"},
+    {id:114,n:"Premium Branded Jackets",d:"Canada Goose, Arcteryx, Moncler",g:"AB",q:100,p:75,t:"P"},
+    {id:115,n:"Pro Sport NFL/NHL/NBA Heavy Jackets",d:"Mostly regular sizes",g:"AB",q:241,p:22,t:"P"},
+    {id:116,n:"Ralph Lauren Button Down Shirts",d:"Mostly regular sizes",g:"AB",q:1000,p:8,t:"P"},
+    {id:117,n:"Ralph Lauren Polo Shirts",d:"Mostly regular sizes",g:"AB",q:2000,p:7,t:"P"},
+    {id:118,n:"RL Sweatshirt",d:"Mostly regular sizes",g:"AB",q:148,p:10,t:"P"},
+    {id:119,n:"Vintage Branded Shell Jackets",d:"Nike, Adidas, Puma, Reebok",g:"AB",q:230,p:15,t:"P"},
+    {id:120,n:"Barbour Wax Jacket",d:"Mostly regular sizes",g:"ABC",q:200,p:30,t:"P"},
+    {id:121,n:"Ralph Lauren Rugby Shirt",d:"Mostly regular sizes",g:"AB",q:300,p:9,t:"P"},
+    {id:122,n:"Brand Shell/Track Jacket",d:"Nike, Adidas, Puma, Reebok",g:"AB",q:445,p:12,t:"S"},
+    {id:123,n:"Branded Rugby Shirts",d:"RL, TH, Chaps, Nautica",g:"AB",q:491,p:7.5,t:"S"},
+    {id:124,n:"Branded Sweatshirt",d:"Nike, Adidas, Champion",g:"AB",q:745,p:7,t:"S"},
+    {id:125,n:"Carhartt/Dickies Pant",d:"Mostly regular sizes",g:"ABC",q:986,p:6.5,t:"S"},
+    {id:126,n:"Coogi Style Jumper",d:"Mostly regular sizes",g:"AB",q:250,p:12,t:"S"},
+    {id:127,n:"Flannel Shirts",d:"Mostly regular sizes",g:"AB",q:2000,p:4,t:"S"},
+    {id:128,n:"Graphic T-Shirt",d:"Mostly regular sizes",g:"AB",q:1000,p:4.5,t:"S"},
+    {id:129,n:"Levis Men Shorts",d:"Mostly regular sizes",g:"AB",q:498,p:5,t:"S"},
+    {id:130,n:"LLW Jacket",d:"Mostly regular sizes",g:"AB",q:500,p:8,t:"S"},
+    {id:131,n:"Mix Levis Jeans Men",d:"Mostly regular sizes",g:"AB",q:1337,p:7,t:"S"},
+    {id:132,n:"Northface Fleece and Jacket Mix",d:"Mostly regular sizes",g:"AB",q:154,p:18,t:"S"},
+    {id:133,n:"Polo V Neck Sweater",d:"Mostly regular sizes",g:"AB",q:489,p:8,t:"S"},
+    {id:134,n:"Single Stitch Tee Shirt",d:"Mostly regular sizes",g:"AB",q:1000,p:4,t:"S"},
+    {id:135,n:"Tommy Halfzip Sweater",d:"Mostly regular sizes",g:"AB",q:449,p:9,t:"S"},
+    {id:136,n:"Baseball Varsity Jacket",d:"Mostly regular sizes",g:"AB",q:400,p:14,t:"S"},
+    {id:137,n:"Branded Denim Jorts",d:"LLW Primarily",g:"AB",q:1000,p:5,t:"S"},
+    {id:138,n:"Nylon Varsity Jacket",d:"Mostly regular sizes",g:"AB",q:199,p:13,t:"S"},
+    {id:139,n:"Pro/Starter NHL NFL Jacket",d:"Mostly regular sizes",g:"AB",q:231,p:18,t:"S"},
+    {id:140,n:"Unbranded Denim Jacket Men",d:"Mostly regular sizes",g:"AB",q:1000,p:5,t:"S"},
+    {id:141,n:"Unbranded Dungaree",d:"Mostly regular sizes",g:"AB",q:500,p:4.5,t:"S"},
+    {id:142,n:"Unbranded Workwear Jacket",d:"Mostly regular sizes",g:"ABC",q:295,p:6,t:"S"}
+  ]
+};
+
 let CS=null,CP=[],cart={},AF='all',SM='air';
 const $=id=>document.getElementById(id);
-function openSeller(k){CS=sellers[k];CP=AP[k];cart={};AF='all';SM='air';
-$('inv-coll-h').textContent=CS.coll;$('inv-supp').textContent=CS.name;
-$('inv-rating').textContent='⭐ '+CS.rat+' rating - '+CS.buy+' repeat buyers';
-$('inv-min').textContent='Minimum order: £'+CS.mA+' (Air) - Min. '+CS.smp+'% staple items';
-$('sea-min').textContent=CS.mS;
-$('btn-air').className='sb sel';$('btn-sea').className='sb';
-$('loc').value='';$('dlv-b').classList.add('hidden');$('sea-b').classList.add('hidden');
-$('srch').value='';
-['f-all','f-Premium','f-Staple'].forEach(function(id){var b=$(id);if(b)b.className='px-3 py-2 text-xs font-semibold rounded-lg '+(id==='f-all'?'bg-blue-600 text-white':'bg-gray-100 text-gray-700');});
-render('all');updSum();
-$('pg-idx').classList.remove('active');$('pg-inv').classList.add('active');
-$('nav-cta').classList.remove('hidden');
-window.scrollTo(0,0);}
-function goBack(){$('pg-inv').classList.remove('active');$('pg-idx').classList.add('active');$('nav-cta').classList.add('hidden');window.scrollTo(0,0);}
-function scrollToOrder(){$('order-summary-box').scrollIntoView({behavior:'smooth'});}
-function selShip(m){SM=m;if(m==='air'){$('btn-air').className='sb sel';$('btn-sea').className='sb';$('sea-b').classList.add('hidden');}else{$('btn-sea').className='sb sel';$('btn-air').className='sb';$('sea-b').classList.remove('hidden');}updDlv();updSum();}
-function updDlv(){var loc=$('loc').value,b=$('dlv-b');if(loc){b.classList.remove('hidden');var ad={UK:'April 10, 2026',US:'April 22, 2026',EU1:'April 14, 2026',EU2:'April 16, 2026',ROW:'April 20, 2026'};var sd={UK:'May 28, 2026',US:'June 18, 2026',EU1:'June 5, 2026',EU2:'June 10, 2026',ROW:'June 25, 2026'};var d=SM==='air'?ad:sd;$('dlv-t').textContent='Estimated Delivery: '+(d[loc]||'TBC')+' via '+(SM==='air'?'Air Shipping':'Sea Shipping');}else b.classList.add('hidden');}
-const GC={'A':'bg-green-100 text-green-700','AB':'bg-green-100 text-green-700','A/B':'bg-blue-100 text-blue-700','ABC':'bg-orange-100 text-orange-700'};
-function render(f){AF=f;var sr=($('srch')?$('srch').value:'').toLowerCase();[{key:'P',sec:'sec-P',cont:'prods-P'},{key:'S',sec:'sec-S',cont:'prods-S'}].forEach(function(type){var secEl=$(type.sec),contEl=$(type.cont);var fl=CP.filter(function(p){return(f==='all'||p.t===type.key)&&p.t===type.key&&(!sr||p.n.toLowerCase().includes(sr)||p.d.toLowerCase().includes(sr));});secEl.style.display=fl.length?'block':'none';contEl.innerHTML=fl.map(function(p){var qty=cart[p.id]||0,av=p.q>0;var gc=GC[p.g]||'bg-blue-100 text-blue-700';return '<div class="bg-white rounded-xl border border-gray-200 p-3 ch shadow-sm'+(av?'':' opacity-60')+'">'+'<div class="mb-1"><div class="font-semibold text-gray-900 text-sm">'+p.n+'</div><div class="text-xs text-gray-500">'+p.d+'</div></div>'+'<div class="flex items-center gap-2 mb-3"><span class="gb '+gc+'">Grade '+p.g+'</span><span class="text-xs text-gray-400">Avail: '+p.q+'</span>'+(av?'':'<span class="text-xs font-bold text-red-500">SOLD OUT</span>')+'</div>'+'<div class="flex items-center justify-between"><span class="font-black text-lg" style="color:#0064d2">£'+p.p.toFixed(2)+'</span>'+(av?'<div class="flex items-center gap-1"><button onclick="updQ('+p.id+',-1)" class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center font-bold text-gray-600 text-sm">-</button><input type="number" class="qi w-10 h-7 text-center text-sm font-semibold border border-gray-200 rounded-lg" value="'+qty+'" min="0" max="'+p.q+'" onchange="setQ('+p.id+',this.value)" id="q-'+p.id+'"><button onclick="updQ('+p.id+',1)" class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-white text-sm" style="background:#0064d2">+</button></div>':'<span class="text-xs text-gray-400">Not Available</span>')+'</div></div>';}).join('');});}
-function filt(t){AF=t;['f-all','f-Premium','f-Staple'].forEach(function(id){var b=$(id);if(b)b.className='px-3 py-2 text-xs font-semibold rounded-lg '+((id==='f-all'&&t==='all')||(id==='f-Premium'&&t==='P')||(id==='f-Staple'&&t==='S')?'bg-blue-600 text-white':'bg-gray-100 text-gray-700');});render(t);}
-function updQ(id,d){var p=CP.find(function(x){return x.id===id;});if(!p)return;cart[id]=Math.max(0,Math.min(p.q,(cart[id]||0)+d));var inp=$('q-'+id);if(inp)inp.value=cart[id];updSum();}
-function setQ(id,v){var p=CP.find(function(x){return x.id===id;});if(!p)return;cart[id]=Math.max(0,Math.min(p.q,parseInt(v)||0));updSum();}
-function updSum(){if(!CS)return;var tot=0,items=0,stpl=0;CP.forEach(function(p){var q=cart[p.id]||0;if(q>0){var l=q*p.p;tot+=l;items+=q;if(p.t==='S')stpl+=l;}});var disc=0;if(tot>=CS.d2)disc=CS.p2;else if(tot>=CS.d1)disc=CS.p1;var da=tot*disc,ft=tot-da,sp=tot>0?((stpl/tot)*100).toFixed(1):'0.0';var si=CP.filter(function(p){return p.t==='S';}).reduce(function(a,p){return a+(cart[p.id]||0);},0);$('tot-i').textContent=items;$('tot-s').innerHTML=si+' <span class="text-xs text-gray-400">('+sp+'%)</span>';$('subtot').textContent='£'+tot.toFixed(2);$('tot-p').textContent='£'+ft.toFixed(2);var dr=$('disc-r');if(disc>0){dr.classList.remove('hidden');$('disc-a').textContent='-£'+da.toFixed(2)+' ('+Math.round(disc*100)+'%)';}else dr.classList.add('hidden');var mo=SM==='air'?CS.mA:CS.mS,sl=SM==='air'?'Air':'Sea';var rm=$('req-m'),sn=parseFloat(sp);if(ft>=mo){rm.className='text-xs px-3 py-2 rounded-lg bg-green-50 text-green-600 font-medium';rm.textContent='✅ Minimum order met (£'+ft.toFixed(2)+')';}else{rm.className='text-xs px-3 py-2 rounded-lg bg-amber-50 text-amber-600 font-medium';rm.textContent='⚠ Min order: £'+mo+' ('+sl+')';}var rs=$('req-s');if(sn>=CS.smp){rs.className='text-xs px-3 py-2 rounded-lg bg-green-50 text-green-600 font-medium';rs.textContent='✅ Staple requirement met ('+sp+'%)';}else{rs.className='text-xs px-3 py-2 rounded-lg bg-amber-50 text-amber-600 font-medium';rs.textContent='⚠ Min '+CS.smp+'% staple (currently '+sp+'%)';}}
-function submitOrder(){var email=$('oemail').value;if(!email||!email.includes('@')){alert('Please enter a valid email address.');return;}if(!CS)return;var ft=parseFloat($('tot-p').textContent.replace('£','').replace(',',''));var mo=SM==='air'?CS.mA:CS.mS,sl=SM==='air'?'Air':'Sea';if(ft<mo){alert('Minimum order of £'+mo+' required for '+sl+' shipping.');return;}if(parseInt($('tot-i').textContent)===0){alert('Please add at least one item.');return;}alert('Thank you! Your order from '+CS.name+' (£'+ft.toFixed(2)+' via '+sl+' Shipping) will be confirmed to '+email+'. The Fleek x eBay team will follow up within 24 hours.');}
+
+function openSeller(k){
+  CS=sellers[k]; CP=AP[k]; cart={}; AF='all'; SM='air';
+  $('inv-coll-h').textContent=CS.coll;
+  $('inv-supp').textContent=CS.name;
+  $('inv-rating').textContent=CS.rat+' rating · '+CS.buy+' repeat buyers';
+  $('inv-min').textContent='Minimum order: £'+CS.mA+' (Air) · Min '+CS.smp+'% staple items';
+  $('sea-min').textContent=CS.mS;
+  $('btn-air').className='sb sel'; $('btn-sea').className='sb';
+  $('loc').value=''; $('dlv-b').classList.add('hidden'); $('sea-b').classList.add('hidden');
+  $('srch').value='';
+  ['f-all','f-Premium','f-Staple'].forEach(function(id){
+    var b=$(id); if(b) b.className='filter-btn'+(id==='f-all'?' active':'');
+  });
+  updSum(); render('all');
+  $('pg-idx').classList.remove('active');
+  $('pg-inv').classList.add('active');
+  $('nav-cta').classList.remove('hidden');
+  window.scrollTo(0,0);
+}
+
+function goBack(){
+  $('pg-inv').classList.remove('active');
+  $('pg-idx').classList.add('active');
+  $('nav-cta').classList.add('hidden');
+  window.scrollTo(0,0);
+}
+
+function scrollToOrder(){ $('order-summary-box').scrollIntoView({behavior:'smooth'}); }
+
+function selShip(m){
+  SM=m;
+  if(m==='air'){$('btn-air').className='sb sel';$('btn-sea').className='sb';$('sea-b').classList.add('hidden');}
+  else{$('btn-sea').className='sb sel';$('btn-air').className='sb';$('sea-b').classList.remove('hidden');}
+  updDlv(); updSum();
+}
+
+function updDlv(){
+  var loc=$('loc').value,b=$('dlv-b');
+  if(loc){
+    b.classList.remove('hidden');
+    var ad={UK:'10 Apr 2026',US:'22 Apr 2026',EU1:'14 Apr 2026',EU2:'16 Apr 2026',ROW:'20 Apr 2026'};
+    var sd={UK:'28 May 2026',US:'18 Jun 2026',EU1:'5 Jun 2026',EU2:'10 Jun 2026',ROW:'25 Jun 2026'};
+    var d=SM==='air'?ad:sd;
+    $('dlv-t').textContent='Estimated delivery: '+(d[loc]||'TBC')+' · '+(SM==='air'?'Air Shipping':'Sea Shipping');
+  } else b.classList.add('hidden');
+}
+
+const GC={'A':'grade-a','AB':'grade-ab','A/B':'grade-ab','ABC':'grade-abc'};
+
+function render(f){
+  AF=f;
+  var sr=($('srch')?$('srch').value:'').toLowerCase();
+  [{key:'P',sec:'sec-P',cont:'prods-P'},{key:'S',sec:'sec-S',cont:'prods-S'}].forEach(function(type){
+    var secEl=$(type.sec),contEl=$(type.cont);
+    var fl=CP.filter(function(p){
+      return (f==='all'||p.t===type.key) && p.t===type.key && (!sr||p.n.toLowerCase().includes(sr)||p.d.toLowerCase().includes(sr));
+    });
+    secEl.style.display=fl.length?'block':'none';
+    contEl.innerHTML=fl.map(function(p){
+      var qty=cart[p.id]||0,av=p.q>0;
+      var gc=GC[p.g]||'grade-ab';
+      return '<div class="prod-card p-3'+(av?'':' opacity-50')+'">'
+        +'<div class="mb-2"><p class="font-semibold text-gray-900 text-sm leading-snug">'+p.n+'</p><p class="text-xs text-gray-500 mt-0.5">'+p.d+'</p></div>'
+        +'<div class="flex items-center gap-2 mb-3">'
+        +'<span class="text-xs font-semibold px-2 py-0.5 rounded '+gc+'">Grade '+p.g+'</span>'
+        +'<span class="text-xs text-gray-400">Avail: '+p.q+'</span>'
+        +(av?'':'<span class="text-xs font-bold text-red-500">Sold Out</span>')
+        +'</div>'
+        +'<div class="flex items-center justify-between">'
+        +'<span class="font-extrabold text-gray-900">£'+p.p.toFixed(2)+'</span>'
+        +(av?'<div class="flex items-center gap-1.5">'
+          +'<button onclick="updQ('+p.id+',-1)" class="w-7 h-7 rounded-lg bg-gray-100 hover:bg-gray-200 flex items-center justify-center font-bold text-gray-700 text-sm transition-colors">−</button>'
+          +'<input type="number" class="qi w-10 h-7 text-center text-sm font-semibold border border-gray-200 rounded-lg" value="'+qty+'" min="0" max="'+p.q+'" onchange="setQ('+p.id+',this.value)" id="q-'+p.id+'">'
+          +'<button onclick="updQ('+p.id+',1)" class="w-7 h-7 rounded-lg bg-gray-900 hover:bg-gray-700 flex items-center justify-center font-bold text-white text-sm transition-colors">+</button>'
+          +'</div>'
+        :'<span class="text-xs text-gray-400">Not available</span>')
+        +'</div></div>';
+    }).join('');
+  });
+}
+
+function filt(t){
+  AF=t;
+  ['f-all','f-Premium','f-Staple'].forEach(function(id){
+    var b=$(id); if(b) b.className='filter-btn'+((id==='f-all'&&t==='all')||(id==='f-Premium'&&t==='P')||(id==='f-Staple'&&t==='S')?' active':'');
+  });
+  render(t);
+}
+
+function updQ(id,d){
+  var p=CP.find(function(x){return x.id===id;});
+  if(!p) return;
+  cart[id]=Math.max(0,Math.min(p.q,(cart[id]||0)+d));
+  var inp=$('q-'+id); if(inp) inp.value=cart[id];
+  updSum();
+}
+
+function setQ(id,v){
+  var p=CP.find(function(x){return x.id===id;});
+  if(!p) return;
+  cart[id]=Math.max(0,Math.min(p.q,parseInt(v)||0));
+  updSum();
+}
+
+function updSum(){
+  if(!CS) return;
+  var tot=0,items=0,stpl=0;
+  CP.forEach(function(p){
+    var q=cart[p.id]||0;
+    if(q>0){var l=q*p.p;tot+=l;items+=q;if(p.t==='S')stpl+=l;}
+  });
+  var disc=0;
+  if(tot>=CS.d2) disc=CS.p2; else if(tot>=CS.d1) disc=CS.p1;
+  var da=tot*disc,ft=tot-da,sp=tot>0?((stpl/tot)*100).toFixed(1):'0.0';
+  var si=CP.filter(function(p){return p.t==='S';}).reduce(function(a,p){return a+(cart[p.id]||0);},0);
+  $('tot-i').textContent=items;
+  $('tot-s').innerHTML=si+' <span class="text-xs text-gray-400">('+sp+'%)</span>';
+  $('subtot').textContent='£'+tot.toFixed(2);
+  $('tot-p').textContent='£'+ft.toFixed(2);
+  var dr=$('disc-r');
+  if(disc>0){dr.classList.remove('hidden');$('disc-a').textContent='-£'+da.toFixed(2)+' ('+Math.round(disc*100)+'%)';}
+  else dr.classList.add('hidden');
+  var mo=SM==='air'?CS.mA:CS.mS,sl=SM==='air'?'Air':'Sea',sn=parseFloat(sp);
+  var rm=$('req-m');
+  if(ft>=mo){rm.className='text-xs px-3 py-2 rounded-lg bg-green-50 text-green-700 font-medium border border-green-100';rm.textContent='Minimum order met (£'+ft.toFixed(2)+')';}
+  else{rm.className='text-xs px-3 py-2 rounded-lg bg-amber-50 text-amber-700 font-medium border border-amber-100';rm.textContent='Minimum order: £'+mo+' ('+sl+')';}
+  var rs=$('req-s');
+  if(sn>=CS.smp){rs.className='text-xs px-3 py-2 rounded-lg bg-green-50 text-green-700 font-medium border border-green-100';rs.textContent='Staple requirement met ('+sp+'%)';}
+  else{rs.className='text-xs px-3 py-2 rounded-lg bg-amber-50 text-amber-700 font-medium border border-amber-100';rs.textContent='Min '+CS.smp+'% staple items (currently '+sp+'%)';}
+}
+
+function submitOrder(){
+  var email=$('oemail').value;
+  if(!email||!email.includes('@')){alert('Please enter a valid email address.');return;}
+  if(!CS) return;
+  var ft=parseFloat($('tot-p').textContent.replace('£','').replace(',',''));
+  var mo=SM==='air'?CS.mA:CS.mS,sl=SM==='air'?'Air':'Sea';
+  if(ft<mo){alert('Minimum order of £'+mo+' required for '+sl+' shipping.');return;}
+  if(parseInt($('tot-i').textContent)===0){alert('Please add at least one item.');return;}
+  alert('Thank you! Your order from '+CS.name+' (£'+ft.toFixed(2)+' via '+sl+' Shipping) will be confirmed to '+email+'. The Fleek × eBay team will follow up within 24 hours.');
+}
 </script>
 </body>
 </html>
