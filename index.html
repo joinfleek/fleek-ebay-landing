@@ -57,7 +57,7 @@ var em=document.getElementById('em').value.trim().toLowerCase();
 var pw=document.getElementById('pw').value;
 var err=document.getElementById('err');
 var card=document.querySelector('.login-card');
-if(em==='jac@ebay.com'&&pw==='ebayfleek'){
+if(em==='jacgould@ebay.com'&&pw==='ebay'){
 var lb=document.getElementById('lb');lb.textContent='Signing in...';lb.disabled=true;lb.style.opacity='0.8';
 sessionStorage.setItem('fleek_auth',JSON.stringify({email:em,ts:Date.now()}));
 setTimeout(function(){window.location.href='home.html';},600);
